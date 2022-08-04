@@ -1,6 +1,6 @@
-# Fraame
+## Fraame
 
-# Installation
+### Installation
 
 ```bash
 cp .env.example .env
