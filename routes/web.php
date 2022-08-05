@@ -13,12 +13,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', fn () => view('welcome'));
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('dashboard', fn () => view('dashboard'))
+    ->middleware('auth')
+    ->name('dashboard');
+
+Route::group([
+    'prefix' => 'posts',
+    'as' => 'posts.',
+    'middleware' => 'auth',
+], function () {
+    Route::get('/', fn () => view('posts.index'))
+        ->name('index');
+
+    Route::get('create', fn () => view('posts.create'))
+        ->name('create');
+
+    Route::get('{hashid}/edit', fn ($hashid) => view('posts.edit', ['hashid' => $hashid]))
+        ->name('edit');
+});
 
 require __DIR__.'/auth.php';

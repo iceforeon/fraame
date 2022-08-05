@@ -36,4 +36,10 @@ return [
         'api_url' => env('TMDB_API_URL'),
     ],
 
+    'hashid' => [
+        'salt' => 'fraame-hashid',
+        'length' => 12,
+        'alphabet' => 'abcdefghijklmnopqrstuvwxyz1234567890',
+    ],
+
 ];

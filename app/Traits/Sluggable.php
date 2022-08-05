@@ -2,8 +2,6 @@
 
 namespace App\Traits;
 
-use App\Service\Slug;
-
 trait Sluggable
 {
     public function getSourceField()
@@ -18,7 +16,9 @@ trait Sluggable
 
     public function generateSlug()
     {
-        $this->{$this->getSlugField()} = (new Slug)->from($this)->generate();
+        $this->{$this->getSlugField()} = (new \App\Service\Slug)
+            ->from($this)
+            ->generate();
     }
 
     protected static function bootSluggable()

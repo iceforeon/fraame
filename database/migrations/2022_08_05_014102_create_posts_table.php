@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id()->from(1000);
+            $table->string('hashid')->nullable()->unique();
             $table->string('title');
             $table->string('slug')->nullable()->unique();
             $table->text('content')->nullable();
