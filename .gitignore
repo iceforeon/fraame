@@ -13,6 +13,7 @@ auth.json
 docker-compose.yml
 Homestead.json
 Homestead.yaml
+ideas.md
 npm-debug.log
 todo.md
 yarn-error.log

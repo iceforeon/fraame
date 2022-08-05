@@ -11,5 +11,5 @@ sail up -d
 sail artisan key:generate
 sail artisan migrate
 sail npm install
-sail run dev
+sail npm run dev
 ```
