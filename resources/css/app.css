@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&family=Space+Grotesk:wght@400;600&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -12,4 +13,20 @@
 
 .prose {
   max-width: none;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #69707e;
+  pointer-events: none;
+  height: 0;
+}
+
+.truncate {
+  @apply text-gray-500;
+}
+
+.sortable-chosen {
+  @apply bg-gray-50;
 }

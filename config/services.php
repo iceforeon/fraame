@@ -34,6 +34,8 @@ return [
     'tmdb' => [
         'token' => env('TMDB_TOKEN'),
         'api_url' => env('TMDB_API_URL'),
+        'poster_url' => env('TMDB_POSTER_URL'),
+        'no_img_url' => env('TMDB_NO_IMAGE_URL'),
     ],
 
     'hashid' => [

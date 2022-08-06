@@ -1,8 +1,9 @@
 import { Editor } from "@tiptap/core";
 import Alpine from "alpinejs";
 import Link from '@tiptap/extension-link';
+import Placeholder from '@tiptap/extension-placeholder'
 import StarterKit from "@tiptap/starter-kit";
-import FloatingMenu from '@tiptap/extension-floating-menu'
+import Sortable from 'sortablejs/modular/sortable.core.esm.js';
 
 document.addEventListener("alpine:init", () => {
   Alpine.data("editor", (content) => {
@@ -64,18 +65,15 @@ document.addEventListener("alpine:init", () => {
           element: this.$refs.element,
           extensions: [
             StarterKit,
-            FloatingMenu.configure({
-              element: document.querySelector('.tiptap-float'),
-              shouldShow: ({ editor }) => {
-                return editor.getJSON().content.length > 1 ? true : false
-              }
+            Placeholder.configure({
+              placeholder: 'Description...',
             }),
             Link.configure({
               linkOnPaste: true,
               openOnClick: false,
               autolink: true,
               protocols: ['ftp', 'mailto'],
-            }),
+            })
           ],
           content: _this.content,
           onCreate({ editor }) {
@@ -93,6 +91,30 @@ document.addEventListener("alpine:init", () => {
         Livewire.on('clear-content', () => editor.commands.clearContent());
       }
     }
+  })
+
+  window.livewire.directive('sortable', (el, directive, component) => {
+    if (directive.modifiers.length > 0) {
+      return;
+    }
+
+    let options = { draggable: '[wire\\:sortable\\.item]' }
+
+    if (el.querySelector('[wire\\:sortable\\.handle]')) {
+        options.handle ='[wire\\:sortable\\.handle]'
+    }
+
+    new Sortable(el, {
+        onEnd: function () {
+            setTimeout(() => {
+                let items = []
+                el.querySelectorAll('[wire\\:sortable\\.item]').forEach((el, index) => {
+                    items.push({ order: index + 1, value: el.getAttribute('wire:sortable.item')})
+                })
+                component.call(directive.method, items)
+            }, 1)
+        }
+    });
   })
 })
 

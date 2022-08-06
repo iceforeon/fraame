@@ -11,7 +11,8 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Inter', ...defaultTheme.fontFamily.sans],
+                sans: ['Space Grotesk', ...defaultTheme.fontFamily.sans],
+                mono: ['Fira Code', ...defaultTheme.fontFamily.mono],
             },
         },
     },

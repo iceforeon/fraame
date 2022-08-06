@@ -13,3 +13,9 @@ sail artisan migrate
 sail npm install
 sail npm run dev
 ```
+
+### Attribution
+
+[TMDB](https://www.themoviedb.org)
+
+[Tiptap](https://tiptap.dev)
