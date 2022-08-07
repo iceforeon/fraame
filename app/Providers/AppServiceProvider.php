@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if(config('debugbar.enabled')) {
+        if (config('debugbar.enabled')) {
             \Debugbar::getJavascriptRenderer()->setAjaxHandlerAutoShow(false);
         }
     }

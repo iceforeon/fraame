@@ -19,9 +19,11 @@ class Post extends Model
     public $incrementing = false;
 
     protected $fillable = [
+        'items',
         'title',
         'slug',
-        'content',
+        'description',
+        'user_id',
     ];
 
     protected function title(): Attribute
@@ -29,9 +31,17 @@ class Post extends Model
         return Attribute::set(fn ($value) => str()->of($value)->trim()->ucfirst()->toString());
     }
 
-    protected function content(): Attribute
+    protected function description(): Attribute
     {
         return Attribute::set(fn ($value) => str()->of($value)->trim()->toString());
+    }
+
+    protected function items(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => json_decode($value, true),
+            set: fn ($value) => json_encode($value),
+        );
     }
 
     public function scopeTitleLike($query, $title)

@@ -11,9 +11,10 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id()->from(1000);
             $table->string('hashid')->nullable()->unique();
+            $table->text('items')->nullable();
             $table->string('title');
             $table->string('slug')->nullable()->unique();
-            $table->text('content')->nullable();
+            $table->text('description')->nullable();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

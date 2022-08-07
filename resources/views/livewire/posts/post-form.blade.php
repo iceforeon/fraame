@@ -1,6 +1,6 @@
-<div class="h-[500px]">
-  <form wire:submit.prevent="submit">
-    <div>
+<div>
+  <form wire:submit.prevent="submit" class="space-y-2">
+    <div x-data="{}">
       <div class="relative shadow-sm">
         <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -14,10 +14,9 @@
           </svg>
         </button>
         @endif
-        <input type="text" wire:model.debounce.500ms="search" name="search" id="search" class="focus:ring-gray-500 focus:border-gray-500 block w-full pl-8 sm:text-sm border-gray-300 rounded-sm" placeholder="Search...">
-
+        <input x-ref="search" type="text" wire:model.debounce.500ms="search" name="search" id="search" class="focus:ring-gray-500 focus:border-gray-500 block w-full pl-8 sm:text-sm border-gray-300 rounded-sm" placeholder="Search...">
         @if (count($results))
-        <div class="absolute shadow-xl rounded-sm mt-1 border border-gray-200 inset-x-0">
+        <div class="z-50 absolute shadow-xl rounded-sm mt-2 border border-gray-200 inset-x-0">
           <ul class="divide-y divide-gray-200 bg-white overflow-hidden">
             @foreach ($results as $result)
             <li class="flex items-center hover:bg-gray-50 hover:cursor-pointer overflow-hidden" wire:click="addItem({{ $result['id'] }})">
@@ -32,43 +31,47 @@
         </div>
         @endif
       </div>
+
+      @if ($items)
+      <div class="mt-2">
+        <ul wire:sortable="sortItems" class="font-mono border divide-y divide-gray-200 rounded-sm">
+          @foreach ($items as $item)
+          <li wire:sortable.item="{{ $item['id'] }}" wire:key="item-{{ $item['id'] }}" class="flex items-center justify-between px-5 py-5 rounded-sm space-x-2">
+            <h3 class="truncate">
+              <a href="" class="text-gray-500 hover:text-gray-700 focus:outline-none focus:underline" tabindex="-1">
+                {{ "{$item['original_title']} ({$item['year_released']})" }}
+              </a>
+            </h3>
+            <div class="flex items-center space-x-3">
+              <button type="button" class="text-gray-400 hover:text-gray-600" tabindex="-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </button>
+              <button wire:click="removeItem({{ $item['id'] }})" type="button" class="text-gray-400 hover:text-gray-600" tabindex="-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </button>
+            </div>
+          </li>
+          @endforeach
+        </ul>
+      </div>
+      @else
+      <div class="mt-2 border border-dashed border-gray-200 rounded-sm h-[64px] flex items-center justify-center text-gray-400">
+        <p>Add movies by <span x-on:click="$refs.search.focus()" class="hover:cursor-pointer hover:underline focus:underline">searching</span></p>
+      </div>
+      @endif
     </div>
 
-    @if (count($items))
-    <div>
-      <ul wire:sortable="sortItems" class="font-mono mt-4 border divide-y divide-gray-200 rounded-sm">
-        @foreach ($items as $item)
-        <li wire:sortable.item="{{ $item['id'] }}" wire:key="item-{{ $item['id'] }}" class="flex items-center justify-between px-5 py-5 rounded-sm space-x-2">
-          <h3 class="truncate">
-            <a href="" class="text-gray-500 hover:text-gray-700 focus:outline-none focus:underline" tabindex="-1">
-              {{ "{$item['original_title']} ({$item['year_released']})" }}
-            </a>
-          </h3>
-          <div class="flex items-center space-x-3">
-            <button type="button" class="text-gray-400 hover:text-gray-600" tabindex="-1">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-              </svg>
-            </button>
-            <button type="button" class="text-gray-400 hover:text-gray-600" tabindex="-1">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-              </svg>
-            </button>
-          </div>
-        </li>
-        @endforeach
-      </ul>
-    </div>
-    @endif
-
-    <div class="hidden mt-4 shadow-sm">
-      <input wire:model.lazy="post.title" type="text" name="title" id="title" maxlength="100" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-sm" placeholder="Untitled">
+    <div class="shadow-sm">
+      <input wire:model.lazy="title" type="text" name="title" id="title" maxlength="100" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-sm" placeholder="Untitled">
     </div>
 
-    <div wire:ignore class="hidden mt-2">
-      <div x-title="editor" x-data="editor($wire.entangle('post.content').defer)" class="prose prose-slate lg:prose-lg">
+    <div wire:ignore>
+      <div x-title="editor" x-data="editor($wire.entangle('description').defer)" class="prose prose-slate lg:prose-lg">
         <div class="flex flex-wrap p-2 border mb-2 rounded-sm">
           <div class="w-7 h-7">
             <button type="button" @click="heading(2)" tabindex="-1" class="p-1.5 text-sm hover:bg-gray-200 ease-in-out duration-15" :class="{ 'bg-gray-200' : isActive('heading',{ level: 2 }, updatedAt) }">
@@ -232,8 +235,24 @@
           </div>
         </div>
 
-        <div x-ref="element" class="min-h-[250px] shadow-sm"></div>
+        <div x-ref="element" class="shadow-sm"></div>
       </div>
+    </div>
+
+    <div @class([
+      'flex items-center',
+      'justify-end' => ! $hashid,
+      'justify-between' => $hashid
+    ])>
+      @if ($hashid)
+      <button wire:click="delete" type="button" class="underline text-sm text-red-600 hover:text-red-700">
+        Delete Post
+      </button>
+      @endif
+
+      <x-button>
+        Save
+      </x-button>
     </div>
   </form>
 </div>

@@ -9,27 +9,37 @@ use Livewire\Component;
 
 class PostForm extends Component
 {
-    public Post $post;
+    public $hashid;
 
-    public $items = [];
+    public $search;
 
     public $results = [];
 
-    public $search;
+    public $items = [];
+
+    public $title;
+
+    public $description;
 
     protected function rules()
     {
         return [
-            'post.title' => ['required', 'string', 'max:100'],
-            'post.content' => ['nullable', 'string'],
+            'items' => ['nullable', 'array'],
+            'title' => ['required', 'string', 'max:100'],
+            'description' => ['nullable', 'string'],
         ];
     }
 
-    public function mount($hashid = null)
+    public function mount()
     {
-        $this->post = $hashid
-            ? request()->user()->posts()->findOr($hashid, fn () => abort(404))
-            : (new Post);
+        if (
+            $this->hashid && $post = request()->user()->posts()->findOr($this->hashid, fn () => abort(404))
+        ) {
+            $this->hashid = $post->hashid;
+            $this->items = $post->items;
+            $this->title = $post->title;
+            $this->description = $post->description;
+        }
     }
 
     public function render()
@@ -41,7 +51,14 @@ class PostForm extends Component
     {
         $this->validate();
 
-        request()->user()->posts()->save($this->post);
+        Post::updateOrCreate([
+            'hashid' => $this->hashid,
+            'user_id' => request()->user()->id,
+        ], [
+            'items' => $this->items,
+            'title' => $this->title,
+            'description' => $this->description,
+        ]);
 
         $this->redirectRoute('posts.index');
     }
@@ -59,33 +76,53 @@ class PostForm extends Component
         return collect($results)->map(function ($result) {
             return collect($result)->merge([
                 'poster_path' => $result['poster_path']
-                    ? config('services.tmdb.poster_url')."/w200/".$result['poster_path']
+                    ? config('services.tmdb.poster_url').'/w200/'.$result['poster_path']
                     : config('services.tmdb.no_img_url'),
-                'year_released' => Carbon::parse($result['release_date'])->format('Y')
+                'year_released' => Carbon::parse($result['release_date'])->format('Y'),
             ])->only(['id', 'poster_path', 'original_title', 'year_released', 'overview']);
-        })->take(7);
+        })->take(5);
     }
 
     public function addItem($value)
     {
         $item = Http::withToken(config('services.tmdb.token'))->get(config('services.tmdb.api_url').'/movie/'.$value)->json();
 
-        $itemCount = count($this->items);
-
         $this->items[] = [
-            'order' =>  $itemCount == 0 ? 1 : $itemCount + 1,
+            'order' => count($this->items) + 1,
             'id' => $item['id'],
             'original_title' => $item['original_title'],
-            'year_released' => Carbon::parse($item['release_date'])->format('Y')
+            'year_released' => Carbon::parse($item['release_date'])->format('Y'),
         ];
 
-        $this->reset(['search', 'results']);
+        $this->clear();
+    }
+
+    public function removeItem($id)
+    {
+        $this->items = collect($this->items)
+            ->filter(fn ($item) => $item['id'] !== $id)
+            ->toArray();
     }
 
     public function sortItems($items)
     {
         $this->items = collect($items)
-            ->map(fn ($item) => collect($this->items)->where('id', $item['value'])->first())
-            ->toArray();
+            ->map(fn ($item) => collect($this->items)->where('id', $item['value'])->first());
+    }
+
+    public function clear()
+    {
+        $this->reset(['search', 'results']);
+    }
+
+    public function delete()
+    {
+        if (
+            $this->hashid && $post = request()->user()->posts()->findOr($this->hashid, fn () => abort(404))
+        ) {
+            $post->delete();
+        }
+
+        $this->redirectRoute('posts.index');
     }
 }
