@@ -40,7 +40,18 @@ class Post extends Model
     {
         return Attribute::make(
             get: fn ($value) => json_decode($value, true),
-            set: fn ($value) => json_encode($value),
+            set: function ($value) {
+                $items = collect($value)->values()->map(function ($item, $key) {
+                    return [
+                        'order' => $key + 1,
+                        'id' => $item['id'],
+                        'original_title' => $item['original_title'],
+                        'year_released' => $item['year_released'],
+                    ];
+                });
+
+                return json_encode($items);
+            },
         );
     }
 
