@@ -15,5 +15,6 @@ Homestead.json
 Homestead.yaml
 ideas.md
 npm-debug.log
+storage/exports
 todo.md
 yarn-error.log

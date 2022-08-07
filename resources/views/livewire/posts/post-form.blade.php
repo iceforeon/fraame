@@ -1,5 +1,5 @@
 <div>
-  <form wire:submit.prevent="submit" class="space-y-2">
+  <form wire:submit.prevent="save" class="space-y-2">
     <div x-data="{}">
       <div class="relative shadow-sm">
         <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
@@ -19,7 +19,7 @@
         <div class="z-50 absolute shadow-xl rounded-sm mt-2 border border-gray-200 inset-x-0">
           <ul class="divide-y divide-gray-200 bg-white overflow-hidden">
             @foreach ($results as $result)
-            <li class="flex items-center hover:bg-gray-50 hover:cursor-pointer overflow-hidden" wire:click="addItem({{ $result['id'] }})">
+            <li class="flex items-center hover:bg-gray-50 hover:cursor-pointer overflow-hidden" wire:click="addItem('{{ $result['id'] }}')">
               <img src="{{ $result['poster_path'] }}" class="w-[50px] h-auto" alt="{{ $result['original_title'] }}">
               <div class="p-3 overflow-hidden">
                 <h3 class="font-bold text-gray-600">{{ "{$result['original_title']} ({$result['year_released']})" }}</h3>
@@ -49,7 +49,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
               </button>
-              <button wire:click="removeItem({{ $item['id'] }})" type="button" class="text-gray-400 hover:text-gray-600" tabindex="-1">
+              <button wire:click="removeItem('{{ $item['id'] }}')" type="button" class="text-gray-400 hover:text-gray-600" tabindex="-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>

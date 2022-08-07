@@ -19,8 +19,13 @@ class PostsTable extends Component
             'posts' => request()
                 ->user()
                 ->posts()
-                ->when($this->title > 3, fn ($q) => $q->titleLike($this->title))
+                ->when(strlen($this->title) > 3, fn ($q) => $q->titleLike($this->title))
                 ->paginate(12),
         ]);
+    }
+
+    public function updatedTitle($value)
+    {
+        $this->title = trim($value);
     }
 }

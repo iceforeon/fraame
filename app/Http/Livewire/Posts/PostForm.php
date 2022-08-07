@@ -47,7 +47,7 @@ class PostForm extends Component
         return view('livewire.posts.post-form');
     }
 
-    public function submit()
+    public function save()
     {
         $this->validate();
 
@@ -65,11 +65,23 @@ class PostForm extends Component
 
     public function updatedSearch($value)
     {
-        $this->results = strlen($value) > 3 ? $this->itemSearch() : [];
+        $this->results = strlen(trim($value)) > 3 ? $this->itemSearch() : [];
     }
 
     public function itemSearch()
     {
+        if ($this->search == 'iceforeon') {
+            return collect([
+                [
+                    'id' => 'ife133769420',
+                    'poster_path' => '/img/ife-poster.png',
+                    'original_title' => 'Iceforeon',
+                    'year_released' => '1996',
+                    'overview' => 'Abandon all hope, ye who enter here.',
+                ],
+            ]);
+        }
+
         $results = Http::withToken(config('services.tmdb.token'))
             ->get(config('services.tmdb.api_url').'/search/movie?query='.$this->search)->json()['results'];
 
@@ -77,15 +89,19 @@ class PostForm extends Component
             return collect($result)->merge([
                 'poster_path' => $result['poster_path']
                     ? config('services.tmdb.poster_url').'/w200/'.$result['poster_path']
-                    : config('services.tmdb.no_img_url'),
+                    : '/img/no-poster.png',
                 'year_released' => Carbon::parse($result['release_date'])->format('Y'),
             ])->only(['id', 'poster_path', 'original_title', 'year_released', 'overview']);
         })->take(5);
     }
 
-    public function addItem($value)
+    public function addItem($id)
     {
-        $item = Http::withToken(config('services.tmdb.token'))->get(config('services.tmdb.api_url').'/movie/'.$value)->json();
+        if ($id == 'ife133769420') {
+            return $this->clear();
+        }
+
+        $item = Http::withToken(config('services.tmdb.token'))->get(config('services.tmdb.api_url').'/movie/'.$id)->json();
 
         $this->items[] = [
             'order' => count($this->items) + 1,

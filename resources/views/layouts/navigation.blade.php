@@ -14,6 +14,9 @@
           <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index')">
             {{ __('Posts') }}
           </x-nav-link>
+          <x-nav-link :href="route('items.index')" :active="request()->routeIs('items.index')">
+            {{ __('Items') }}
+          </x-nav-link>
         </div>
       </div>
       <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -55,6 +58,9 @@
       </x-responsive-nav-link>
       <x-responsive-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index')">
         {{ __('Posts') }}
+      </x-responsive-nav-link>
+      <x-responsive-nav-link :href="route('items.index')" :active="request()->routeIs('items.index')">
+        {{ __('Items') }}
       </x-responsive-nav-link>
     </div>
     <div class="pt-4 pb-1 border-t border-gray-200">

@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id()->from(1000);
             $table->string('hashid')->nullable()->unique();
             $table->text('items')->nullable();
-            $table->string('title');
+            $table->string('title')->index();
             $table->string('slug')->nullable()->unique();
             $table->text('description')->nullable();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();

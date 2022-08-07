@@ -28,12 +28,12 @@ class Post extends Model
 
     protected function title(): Attribute
     {
-        return Attribute::set(fn ($value) => str()->of($value)->trim()->ucfirst()->toString());
+        return Attribute::set(fn ($value) => trim(ucfirst($value)));
     }
 
     protected function description(): Attribute
     {
-        return Attribute::set(fn ($value) => str()->of($value)->trim()->toString());
+        return Attribute::set(fn ($value) => trim($value));
     }
 
     protected function items(): Attribute

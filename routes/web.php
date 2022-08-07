@@ -34,4 +34,19 @@ Route::group([
         ->name('edit');
 });
 
+Route::group([
+    'prefix' => 'items',
+    'as' => 'items.',
+    'middleware' => 'auth',
+], function () {
+    Route::get('/', fn () => view('items.index'))
+        ->name('index');
+
+    Route::get('create', fn () => view('items.create'))
+        ->name('create');
+
+    Route::get('{hashid}/edit', fn ($hashid) => view('items.edit', ['hashid' => $hashid]))
+        ->name('edit');
+});
+
 require __DIR__.'/auth.php';
