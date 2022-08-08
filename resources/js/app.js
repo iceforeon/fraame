@@ -93,29 +93,44 @@ document.addEventListener("alpine:init", () => {
     }
   })
 
-  window.livewire.directive('sortable', (el, directive, component) => {
-    if (directive.modifiers.length > 0) {
-      return;
+  Alpine.data("poster", () => {
+    return {
+      init() {
+        this.sleep(500).then(() => {
+          document.getElementById('poster').style.height = `${this.$refs.wrapper.clientHeight}px`;
+        });
+      },
+      sleep (time) {
+        return new Promise((resolve) => setTimeout(resolve, time));
+      }
     }
-
-    let options = { draggable: '[wire\\:sortable\\.item]' }
-
-    if (el.querySelector('[wire\\:sortable\\.handle]')) {
-        options.handle ='[wire\\:sortable\\.handle]'
-    }
-
-    new Sortable(el, {
-        onEnd: function () {
-            setTimeout(() => {
-                let items = []
-                el.querySelectorAll('[wire\\:sortable\\.item]').forEach((el, index) => {
-                    items.push({ order: index + 1, value: el.getAttribute('wire:sortable.item')})
-                })
-                component.call(directive.method, items)
-            }, 1)
-        }
-    });
   })
+
+  if (window.livewire !== undefined) {
+    window.livewire.directive('sortable', (el, directive, component) => {
+      if (directive.modifiers.length > 0) {
+        return;
+      }
+
+      let options = { draggable: '[wire\\:sortable\\.item]' }
+
+      if (el.querySelector('[wire\\:sortable\\.handle]')) {
+          options.handle ='[wire\\:sortable\\.handle]'
+      }
+
+      new Sortable(el, {
+          onEnd: function () {
+              setTimeout(() => {
+                  let items = []
+                  el.querySelectorAll('[wire\\:sortable\\.item]').forEach((el, index) => {
+                      items.push({ order: index + 1, value: el.getAttribute('wire:sortable.item')})
+                  })
+                  component.call(directive.method, items)
+              }, 1)
+          }
+      });
+    })
+  }
 })
 
 window.Alpine = Alpine;

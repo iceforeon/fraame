@@ -16,6 +16,10 @@ class Item extends Model
     use Sluggable;
     use HasFactory;
 
+    protected $primaryKey = 'hashid';
+
+    public $incrementing = false;
+
     protected $fillable = [
         'type',
         'title',
@@ -61,6 +65,11 @@ class Item extends Model
                 ? Str::replace('TV', 'TV ', $type)
                 : $type;
         });
+    }
+
+    public function yearReleased(): Attribute
+    {
+        return Attribute::get(fn () => $this->release_date->format('Y'));
     }
 
     public function scopeTitleLike($query, $title)
