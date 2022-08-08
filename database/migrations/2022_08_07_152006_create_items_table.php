@@ -10,10 +10,17 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
+            $table->string('hashid')->nullable()->unique();
+            $table->string('type')->nullable();
             $table->string('title')->index();
             $table->string('slug')->nullable();
-            $table->string('tmdb_id');
-            $table->string('imdb_id');
+            $table->text('overview')->nullable();
+            $table->date('release_date')->nullable();
+            $table->string('tmdb_id')->nullable();
+            $table->string('poster_path')->nullable();
+            $table->string('imdb_id')->nullable();
+            $table->string('imdb_rank')->nullable();
+            $table->string('imdb_rating')->nullable();
             $table->string('ticket_image')->nullable();
             $table->datetime('posted_at')->nullable();
             $table->timestamps();

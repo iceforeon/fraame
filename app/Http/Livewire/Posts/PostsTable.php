@@ -26,6 +26,8 @@ class PostsTable extends Component
 
     public function updatedTitle($value)
     {
-        $this->title = trim($value);
+        if (empty($value)) {
+            $this->resetPage();
+        }
     }
 }

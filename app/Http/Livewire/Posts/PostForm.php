@@ -83,7 +83,8 @@ class PostForm extends Component
         }
 
         $results = Http::withToken(config('services.tmdb.token'))
-            ->get(config('services.tmdb.api_url').'/search/movie?query='.$this->search)->json()['results'];
+            ->get(config('services.tmdb.api_url').'/search/movie?query='.$this->search)
+            ->json()['results'];
 
         return collect($results)->map(function ($result) {
             return collect($result)->merge([
@@ -101,7 +102,9 @@ class PostForm extends Component
             return $this->clear();
         }
 
-        $item = Http::withToken(config('services.tmdb.token'))->get(config('services.tmdb.api_url').'/movie/'.$id)->json();
+        $item = Http::withToken(config('services.tmdb.token'))
+            ->get(config('services.tmdb.api_url').'/movie/'.$id)
+            ->json();
 
         $this->items[] = [
             'order' => count($this->items) + 1,

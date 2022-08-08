@@ -18,4 +18,6 @@ sail npm run dev
 
 [TMDB](https://www.themoviedb.org)
 
+[IMDB](https://www.imdb.com)
+
 [Tiptap](https://tiptap.dev)
