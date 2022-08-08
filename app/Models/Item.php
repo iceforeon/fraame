@@ -8,6 +8,7 @@ use App\Traits\Sluggable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Item extends Model
 {
@@ -23,6 +24,7 @@ class Item extends Model
         'release_date',
         'tmdb_id',
         'poster_path',
+        'genres',
         'imdb_id',
         'imdb_rank',
         'imdb_rating',
@@ -48,6 +50,17 @@ class Item extends Model
     protected function titleFormatted(): Attribute
     {
         return Attribute::get(fn () => "{$this->title} ({$this->release_date->format('Y')})");
+    }
+
+    protected function typeFormatted(): Attribute
+    {
+        return Attribute::get(function () {
+            $type = ItemType::tryFrom($this->type)->name;
+
+            return $this->type == ItemType::TVShow->value
+                ? Str::replace('TV', 'TV ', $type)
+                : $type;
+        });
     }
 
     public function scopeTitleLike($query, $title)

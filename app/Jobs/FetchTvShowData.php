@@ -11,7 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 
-class FetchMovieData implements ShouldQueue
+class FetchTvShowData implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
@@ -29,36 +29,36 @@ class FetchMovieData implements ShouldQueue
     {
         $item = $this->item;
 
-        $movieGenres = Http::withToken(config('services.tmdb.token'))
-            ->get(config('services.tmdb.api_url').'/genre/movie/list')
+        $tvShowGenres = Http::withToken(config('services.tmdb.token'))
+            ->get(config('services.tmdb.api_url').'/genre/tv/list')
             ->json()['genres'];
 
         $results = Http::retry(3, 300)
             ->withToken(config('services.tmdb.token'))
-            ->get(config('services.tmdb.api_url').'/search/movie?query='.$item['title'])
+            ->get(config('services.tmdb.api_url').'/search/tv?query='.$item['title'])
             ->json()['results'];
 
-        $movie = collect($results)->filter(function ($result) use ($item) {
-            return isset($result['release_date'], $item['year_released'])
-                ? str_contains($result['release_date'], $item['year_released'])
+        $tvshow = collect($results)->filter(function ($result) use ($item) {
+            return isset($result['first_air_date'], $item['year_released'])
+                ? str_contains($result['first_air_date'], $item['year_released'])
                 : false;
         })->first();
 
-        $movieGenres = collect($movieGenres)
+        $tvShowGenres = collect($tvShowGenres)
             ->mapWithKeys(fn ($genre) => [$genre['id'] => $genre['name']]);
 
-        $genres = collect($movie['genre_ids'])
-            ->mapWithKeys(fn ($value) => [$value => $movieGenres[$value]])->implode(', ');
+        $genres = collect($tvshow['genre_ids'])
+            ->mapWithKeys(fn ($value) => [$value => $tvShowGenres[$value]])->implode(', ');
 
-        if ($movie) {
+        if ($tvshow) {
             Item::updateOrCreate([
-                'type' => ItemType::Movie,
-                'tmdb_id' => $movie['id'],
+                'type' => ItemType::TVShow,
+                'tmdb_id' => $tvshow['id'],
             ], [
-                'title' => $movie['title'],
-                'overview' => $movie['overview'],
-                'release_date' => $movie['release_date'],
-                'poster_path' => $movie['poster_path'],
+                'title' => $tvshow['name'],
+                'overview' => $tvshow['overview'],
+                'release_date' => $tvshow['first_air_date'],
+                'poster_path' => $tvshow['poster_path'],
                 'genres' => $genres,
                 'imdb_id' => $item['imdb_id'],
                 'imdb_rank' => $item['imdb_rank'],

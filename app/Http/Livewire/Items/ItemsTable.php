@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Items;
 
+use App\Enums\ItemType;
 use App\Jobs\FetchMovieData;
+use App\Jobs\FetchTvShowData;
 use App\Models\Item;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -39,12 +41,18 @@ class ItemsTable extends Component
 
     public function scrape()
     {
+        // https://www.imdb.com/chart/top
+        // table[data-caller-name="chart-top250movie"]
+
+        // https://www.imdb.com/chart/toptv
+        // table[data-caller-name="chart-top250tv"]
+
         $response = Http::withHeaders(['Accept-Language' => 'en-US'])
-            ->get('https://www.imdb.com/chart/top');
+            ->get('https://www.imdb.com/chart/toptv');
 
         $crawler = (new Crawler($response->body()));
 
-        $items = $crawler->filter('table[data-caller-name="chart-top250movie"] tbody.lister-list tr')->each(function ($node, $key) {
+        $items = $crawler->filter('table[data-caller-name="chart-top250tv"] tbody.lister-list tr')->each(function ($node, $key) {
             $idTitle = $node->filter('tr > td.titleColumn a')->each(function ($anchor) {
                 $id = explode('/', trim($anchor->attr('href')))[2];
                 $title = trim($anchor->text());
@@ -69,6 +77,9 @@ class ItemsTable extends Component
             ];
         });
 
+        // movies.xlsx
+        // tvshow.xlsx
+
         SimpleExcelWriter::create(Storage::path('/exports/movies.xlsx'))
             ->addRows($items);
 
@@ -81,5 +92,23 @@ class ItemsTable extends Component
         SimpleExcelReader::create(Storage::path('/exports/movies.xlsx'))
             ->getRows()
             ->each(fn ($item) => FetchMovieData::dispatch($item));
+
+        SimpleExcelReader::create(Storage::path('/exports/tvshow.xlsx'))
+            ->getRows()
+            ->each(fn ($item) => FetchTvShowData::dispatch($item));
     }
+
+    // public function discrepancies()
+    // {
+    //     dd(array_diff(
+    //         collect(
+    //             SimpleExcelReader::create(Storage::path('/exports/tvshow.xlsx'))
+    //                 ->getRows()
+    //                 ->all()
+    //         )
+    //             ->pluck('imdb_id')
+    //             ->toArray(),
+    //         Item::where('type', ItemType::TVShow)->pluck('imdb_id')->toArray()
+    //     ));
+    // }
 }

@@ -29,6 +29,12 @@
                                 <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
                                     Title
                                 </th>
+                                <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                                    Genres
+                                </th>
+                                <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                                    Type
+                                </th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -37,6 +43,12 @@
                             <tr>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500" data-rank="{{ $item->imdb_rank }}">
                                     {{ $item->title_formatted }}
+                                </td>
+                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500" data-rank="{{ $item->imdb_rank }}">
+                                    {{ $item->genres }}
+                                </td>
+                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500" data-rank="{{ $item->imdb_rank }}">
+                                    {{ $item->type_formatted }}
                                 </td>
                                 <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                                     <div class="flex justify-end items-center space-x-3">

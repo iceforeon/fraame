@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('release_date')->nullable();
             $table->string('tmdb_id')->nullable();
             $table->string('poster_path')->nullable();
+            $table->string('genres')->nullable();
             $table->string('imdb_id')->nullable();
             $table->string('imdb_rank')->nullable();
             $table->string('imdb_rating')->nullable();
