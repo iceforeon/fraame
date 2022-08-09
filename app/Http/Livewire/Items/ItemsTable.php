@@ -2,9 +2,7 @@
 
 namespace App\Http\Livewire\Items;
 
-use App\Enums\ItemType;
 use App\Jobs\FetchMovieData;
-use App\Jobs\FetchTvShowData;
 use App\Models\Item;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;

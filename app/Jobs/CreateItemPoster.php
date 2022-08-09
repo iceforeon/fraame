@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Models\Item;
 use HeadlessChromium\BrowserFactory;
-use HeadlessChromium\Page;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

@@ -44,4 +44,14 @@ return [
         'alphabet' => 'abcdefghijklmnopqrstuvwxyz1234567890',
     ],
 
+    'facebook' => [
+        'page_id' => env('FACEBOOK_PAGE_ID'),
+        'app_id' => env('FACEBOOK_APP_ID'),
+        'app_secret' => env('FACEBOOK_APP_SECRET'),
+        'graph_version' => env('FACEBOOK_GRAPH_VERSION', 'v11.0'),
+        'default_graph_version' => env('FACEBOOK_GRAPH_VERSION', 'v11.0'),
+        'beta_mode' => env('FACEBOOK_ENABLE_BETA', false),
+        'default_access_token' => env('FACEBOOK_DEFAULT_ACCESS_TOKEN'),
+    ],
+
 ];
