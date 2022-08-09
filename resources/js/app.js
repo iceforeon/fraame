@@ -93,19 +93,6 @@ document.addEventListener("alpine:init", () => {
     }
   })
 
-  Alpine.data("poster", () => {
-    return {
-      init() {
-        this.sleep(500).then(() => {
-          document.getElementById('poster').style.height = `${this.$refs.wrapper.clientHeight}px`;
-        });
-      },
-      sleep (time) {
-        return new Promise((resolve) => setTimeout(resolve, time));
-      }
-    }
-  })
-
   if (window.livewire !== undefined) {
     window.livewire.directive('sortable', (el, directive, component) => {
       if (directive.modifiers.length > 0) {

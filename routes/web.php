@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Item;
+use App\Http\Controllers\ItemPosterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('item-ticket/{item}', fn (Item $item) => view('item-ticket', ['item' => $item]));
+Route::get('item-poster/{item}', [ItemPosterController::class, 'index'])
+    ->name('item-poster');
 
 Route::get('/', fn () => view('welcome'));
 

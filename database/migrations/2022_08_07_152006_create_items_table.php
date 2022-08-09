@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('imdb_id')->nullable();
             $table->string('imdb_rank')->nullable();
             $table->string('imdb_rating')->nullable();
-            $table->string('ticket_image')->nullable();
+            $table->string('poster_image')->nullable();
             $table->datetime('posted_at')->nullable();
             $table->timestamps();
         });

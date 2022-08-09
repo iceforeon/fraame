@@ -212,4 +212,6 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
+    'poster_route_key' => env('POSTER_ROUTE_KEY'),
+
 ];
