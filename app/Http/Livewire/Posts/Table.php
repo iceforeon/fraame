@@ -5,7 +5,7 @@ namespace App\Http\Livewire\Posts;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class PostsTable extends Component
+class Table extends Component
 {
     use WithPagination;
 
@@ -15,7 +15,7 @@ class PostsTable extends Component
 
     public function render()
     {
-        return view('livewire.posts.posts-table', [
+        return view('livewire.posts.table', [
             'posts' => request()
                 ->user()
                 ->posts()

@@ -23,10 +23,11 @@
   height: 0;
 }
 
-.truncate {
-  @apply text-gray-500;
-}
-
 .sortable-chosen {
   @apply bg-gray-50;
 }
+
+/* .truncate {
+  @apply text-gray-500;
+} */
+

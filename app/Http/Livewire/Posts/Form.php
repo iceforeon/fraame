@@ -7,7 +7,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 
-class PostForm extends Component
+class Form extends Component
 {
     public $hashid;
 
@@ -44,7 +44,7 @@ class PostForm extends Component
 
     public function render()
     {
-        return view('livewire.posts.post-form');
+        return view('livewire.posts.form');
     }
 
     public function save()

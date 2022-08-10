@@ -2,10 +2,12 @@
 
 namespace App\Jobs;
 
-use App\Models\Item;
+use App\Enums\ItemType;
 use HeadlessChromium\BrowserFactory;
+use HeadlessChromium\Page;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -15,27 +17,27 @@ use Intervention\Image\Facades\Image;
 
 class CreateItemPoster implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
-    public $item;
-
-    public function __construct(Item $item)
+    public function __construct(public Model $model, public ItemType $type)
     {
-        $this->item = $item;
     }
 
     public function handle()
     {
-        $browser = (new BrowserFactory('google-chrome'))
-            ->createBrowser(['noSandbox' => true]);
+        // try {
+            $browser = (new BrowserFactory('google-chrome'))
+                ->createBrowser(['noSandbox' => true]);
 
-        try {
             $page = $browser->createPage();
 
-            $page->navigate(route('item-poster', $this->item->hashid).'?key='.config('app.poster_route_key'))
-                ->waitForNavigation();
+            $page->navigate(route('item-poster', $this->model->hashid).'?key='.config('app.poster_route_key').'&type='.$this->type->value)
+                ->waitForNavigation(Page::NETWORK_IDLE, 90000);
 
-            $page->waitUntilContainsElement('div.poster-idle', 50000);
+            $page->waitUntilContainsElement('div.poster-idle', 80000);
 
             $evaluation = $page->evaluate('document.getElementById("poster").clientHeight');
 
@@ -47,11 +49,13 @@ class CreateItemPoster implements ShouldQueue
 
             $file = Image::make($base64Image);
 
-            Storage::put($filename, (string) $file->encode(), 'public');
-        } catch (\Exception $exception) {
-            \Log::error($exception->getMessage());
-        } finally {
+            Storage::disk('media')->put($filename, (string) $file->encode(), 'public');
+
+            $this->model->update(['poster_path' => $filename]);
+        // } catch (\Exception $exception) {
+        //     \Log::error($exception->getMessage());
+        // } finally {
             $browser->close();
-        }
+        // }
     }
 }

@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-use App\Enums\ItemType;
 use App\Traits\Hashid;
 use App\Traits\Sluggable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
-class Item extends Model
+class Movie extends Model
 {
     use Hashid;
     use Sluggable;
@@ -21,28 +21,22 @@ class Item extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'type',
         'title',
         'slug',
         'overview',
         'release_date',
-        'tmdb_id',
-        'poster_path',
         'genres',
+        'tmdb_id',
+        'tmdb_poster_path',
+        'poster_path',
         'imdb_id',
         'imdb_rank',
         'imdb_rating',
-        'ticket_image',
         'posted_at',
     ];
 
-    protected $cast = [
-        'type' => ItemType::class,
-        'imdb_rank' => 'integer',
-    ];
-
     protected $dates = [
-        'release_date',
+        'release_date' => 'date:Y-m-d',
         'posted_at',
     ];
 
@@ -53,27 +47,31 @@ class Item extends Model
 
     protected function titleFormatted(): Attribute
     {
-        return Attribute::get(fn () => "{$this->title} ({$this->release_date->format('Y')})");
-    }
-
-    protected function typeFormatted(): Attribute
-    {
-        return Attribute::get(function () {
-            $type = ItemType::tryFrom($this->type)->name;
-
-            return $this->type == ItemType::TVShow->value
-                ? Str::replace('TV', 'TV ', $type)
-                : $type;
-        });
+        return Attribute::get(fn () => "{$this->title} (".Carbon::parse($this->release_date)->format('Y').')');
     }
 
     public function yearReleased(): Attribute
     {
-        return Attribute::get(fn () => $this->release_date->format('Y'));
+        return Attribute::get(fn () => Carbon::parse($this->release_date)->format('Y'));
+    }
+
+    public function updatedAtForHuman(): Attribute
+    {
+        return Attribute::get(fn () => $this->updated_at->format('F d, Y'));
+    }
+
+    public function posterUrl(): Attribute
+    {
+        return Attribute::get(fn () => Storage::disk('media')->url($this->poster_path));
     }
 
     public function scopeTitleLike($query, $title)
     {
         return $query->where('title', 'like', '%'.$title.'%');
+    }
+
+    public function scopeImdbRank($query, $sort = 'asc')
+    {
+        return $query->orderBy('imdb_rank', $sort);
     }
 }

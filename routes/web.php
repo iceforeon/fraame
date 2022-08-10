@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('item-poster/{item}', [ItemPosterController::class, 'index'])
+Route::get('item-poster/{hashid}', [ItemPosterController::class, 'index'])
     ->name('item-poster');
 
 Route::get('/', fn () => view('welcome'));
@@ -22,6 +22,36 @@ Route::get('/', fn () => view('welcome'));
 Route::get('dashboard', fn () => view('dashboard'))
     ->middleware('auth')
     ->name('dashboard');
+
+Route::group([
+    'prefix' => 'movies',
+    'as' => 'movies.',
+    'middleware' => 'auth',
+], function () {
+    Route::get('/', fn () => view('movies.index'))
+        ->name('index');
+
+    Route::get('create', fn () => view('movies.create'))
+        ->name('create');
+
+    Route::get('{hashid}/edit', fn ($hashid) => view('movies.edit', ['hashid' => $hashid]))
+        ->name('edit');
+});
+
+Route::group([
+    'prefix' => 'tv-shows',
+    'as' => 'tv-shows.',
+    'middleware' => 'auth',
+], function () {
+    Route::get('/', fn () => view('tv-show.index'))
+        ->name('index');
+
+    Route::get('create', fn () => view('tv-show.create'))
+        ->name('create');
+
+    Route::get('{hashid}/edit', fn ($hashid) => view('tv-show.edit', ['hashid' => $hashid]))
+        ->name('edit');
+});
 
 Route::group([
     'prefix' => 'posts',
@@ -35,21 +65,6 @@ Route::group([
         ->name('create');
 
     Route::get('{hashid}/edit', fn ($hashid) => view('posts.edit', ['hashid' => $hashid]))
-        ->name('edit');
-});
-
-Route::group([
-    'prefix' => 'items',
-    'as' => 'items.',
-    'middleware' => 'auth',
-], function () {
-    Route::get('/', fn () => view('items.index'))
-        ->name('index');
-
-    Route::get('create', fn () => view('items.create'))
-        ->name('create');
-
-    Route::get('{hashid}/edit', fn ($hashid) => view('items.edit', ['hashid' => $hashid]))
         ->name('edit');
 });
 

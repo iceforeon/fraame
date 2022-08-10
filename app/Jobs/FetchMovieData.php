@@ -2,8 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Enums\ItemType;
-use App\Models\Item;
+use App\Models\Movie;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -18,51 +17,50 @@ class FetchMovieData implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public $item;
-
-    public function __construct($item)
+    public function __construct(public $movie)
     {
-        $this->item = $item;
     }
 
     public function handle()
     {
-        $item = $this->item;
+        $movie = $this->movie;
 
-        $movieGenres = Http::withToken(config('services.tmdb.token'))
+        $movieGenres = Http::retry(3, 300)
+            ->withToken(config('services.tmdb.token'))
             ->get(config('services.tmdb.api_url').'/genre/movie/list')
             ->json()['genres'];
 
         $results = Http::retry(3, 300)
             ->withToken(config('services.tmdb.token'))
-            ->get(config('services.tmdb.api_url').'/search/movie?query='.$item['title'])
+            ->get(config('services.tmdb.api_url').'/search/movie?query='.$movie['title'])
             ->json()['results'];
 
-        $movie = collect($results)->filter(function ($result) use ($item) {
-            return isset($result['release_date'], $item['year_released'])
-                ? str_contains($result['release_date'], $item['year_released'])
+        $result = collect($results)->filter(function ($result) use ($movie) {
+            return isset($result['release_date'], $movie['year_released'])
+                ? str_contains($result['release_date'], $movie['year_released'])
                 : false;
         })->first();
 
         $movieGenres = collect($movieGenres)
             ->mapWithKeys(fn ($genre) => [$genre['id'] => $genre['name']]);
 
-        $genres = collect($movie['genre_ids'])
-            ->mapWithKeys(fn ($value) => [$value => $movieGenres[$value]])->implode(', ');
+        if ($result) {
+            $genres = $result['genre_ids']
+                ? collect($result['genre_ids'])
+                    ->mapWithKeys(fn ($value) => [$value => $movieGenres[$value]])->implode(', ')
+                : null;
 
-        if ($movie) {
-            Item::updateOrCreate([
-                'type' => ItemType::Movie,
-                'tmdb_id' => $movie['id'],
+            Movie::updateOrCreate([
+                'tmdb_id' => $result['id'],
             ], [
-                'title' => $movie['title'],
-                'overview' => $movie['overview'],
-                'release_date' => $movie['release_date'],
-                'poster_path' => $movie['poster_path'],
+                'title' => $result['title'],
+                'overview' => $result['overview'],
+                'release_date' => $result['release_date'],
+                'tmdb_poster_path' => $result['poster_path'],
                 'genres' => $genres,
-                'imdb_id' => $item['imdb_id'],
-                'imdb_rank' => $item['imdb_rank'],
-                'imdb_rating' => $item['imdb_rating'],
+                'imdb_id' => $movie['imdb_id'],
+                'imdb_rank' => $movie['imdb_rank'],
+                'imdb_rating' => $movie['imdb_rating'],
             ]);
         }
     }
