@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('tmdb_poster_path')->nullable();
             $table->string('poster_path')->nullable();
             $table->string('imdb_id')->nullable()->unique();
-            $table->smallInteger('imdb_rank')->nullable();
             $table->string('imdb_rating')->nullable();
             $table->datetime('featured_at')->nullable();
             $table->timestamps();

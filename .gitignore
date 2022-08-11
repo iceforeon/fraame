@@ -6,11 +6,13 @@
 /node_modules
 /public/build
 /public/hot
-/public/storage
 /public/media
+/public/spreadsheets
+/public/storage
 /storage/*.key
 /vendor
 auth.json
+docker
 docker-compose.yml
 Homestead.json
 Homestead.yaml
@@ -19,4 +21,3 @@ npm-debug.log
 storage/exports
 todo.md
 yarn-error.log
-docker

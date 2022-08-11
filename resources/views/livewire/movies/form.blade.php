@@ -24,9 +24,9 @@
               <ul class="divide-y divide-gray-200 bg-white overflow-hidden">
                 @foreach ($results as $result)
                 <li wire:click="pickMovie('{{ $result['id'] }}')" class="flex items-center hover:bg-gray-50 hover:cursor-pointer overflow-hidden">
-                  <img src="{{ $result['poster_path'] }}" class="w-[50px] h-auto" alt="{{ $result['original_title'] }}">
+                  <img src="{{ $result['poster_path'] }}" class="w-[50px] h-auto" alt="{{ $result['title'] }}">
                   <div class="p-3 overflow-hidden">
-                    <h3 class="font-bold text-gray-600">{{ "{$result['original_title']} ({$result['year_released']})" }}</h3>
+                    <h3 class="font-bold text-gray-600">{{ "{$result['title']} ({$result['year_released']})" }}</h3>
                     <p class="truncate text-gray-400">{{ $result['overview'] }}</p>
                   </div>
                 </li>
@@ -77,23 +77,6 @@
           </div>
         </div>
 
-        <div class="sm:grid grid-cols-3 gap-4">
-          <div>
-            <label for="imdb_id" class="text-sm font-semibold leading-6 text-gray-900">IMDB ID</label>
-            <input wire:model.lazy="movie.imdb_id" type="text" name="imdb_id" id="imdb_id" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-sm mt-2">
-          </div>
-
-          <div class="mt-4 sm:mt-0">
-            <label for="imdb_rank" class="text-sm font-semibold leading-6 text-gray-900">IMDB Rank</label>
-            <input wire:model.lazy="movie.imdb_rank" type="text" name="imdb_rank" id="imdb_rank" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-sm mt-2">
-          </div>
-
-          <div class="mt-4 sm:mt-0">
-            <label for="imdb_rating" class="text-sm font-semibold leading-6 text-gray-900">IMDB Rating</label>
-            <input wire:model.lazy="movie.imdb_rating" type="text" name="imdb_rating" id="imdb_rating" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-sm mt-2">
-          </div>
-        </div>
-
         @if ($hashid)
         <div>
           <label for="frame" class="text-sm font-semibold leading-6 text-gray-900">Poster</label>
@@ -112,7 +95,21 @@
             @endif
           </div>
         </div>
+        @endif
 
+        <div class="sm:grid grid-cols-3 gap-4">
+          <div>
+            <label for="imdb_id" class="text-sm font-semibold leading-6 text-gray-900">IMDB ID</label>
+            <input wire:model.lazy="movie.imdb_id" type="text" name="imdb_id" id="imdb_id" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-sm mt-2">
+          </div>
+
+          <div class="mt-4 sm:mt-0">
+            <label for="imdb_rating" class="text-sm font-semibold leading-6 text-gray-900">IMDB Rating</label>
+            <input wire:model.lazy="movie.imdb_rating" type="text" name="imdb_rating" id="imdb_rating" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-sm mt-2">
+          </div>
+        </div>
+
+        @if ($hashid)
         <div class="sm:grid grid-cols-3 gap-4">
           <div>
             <label for="updated_at" class="text-sm font-semibold leading-6 text-gray-900">Updated At</label>

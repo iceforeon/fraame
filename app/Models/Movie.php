@@ -30,7 +30,6 @@ class Movie extends Model
         'tmdb_poster_path',
         'poster_path',
         'imdb_id',
-        'imdb_rank',
         'imdb_rating',
         'posted_at',
     ];
@@ -70,8 +69,13 @@ class Movie extends Model
         return $query->where('title', 'like', '%'.$title.'%');
     }
 
-    public function scopeImdbRank($query, $sort = 'asc')
+    public function scopeImdbRating($query, $sort = 'desc')
     {
-        return $query->orderBy('imdb_rank', $sort);
+        return $query->orderBy('imdb_rating', $sort);
+    }
+
+    public function scopeHasPoster($query)
+    {
+        return $query->whereNotNull('poster_path');
     }
 }

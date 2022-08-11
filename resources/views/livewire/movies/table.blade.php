@@ -5,11 +5,6 @@
     </div>
 
     <div>
-      <button wire:click="import" type="button" class="inline-flex items-center justify-center border border-transparent bg-white px-4 py-2 text-sm font-medium text-black hover:underline focus:outline-none sm:w-auto">
-        <span wire:loading.remove wire:target="import">Import</span>
-        <span wire:loading wire:target="import">Importing...</span>
-      </button>
-
       <a href="{{ route('movies.create') }}" class="inline-flex items-center justify-center border border-transparent bg-gray-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 sm:w-auto">
         New Movie
       </a>
@@ -27,8 +22,8 @@
                   Title
                 </th>
 
-                <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                  Genres
+                <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                  Featured At
                 </th>
 
                 <th></th>
@@ -38,14 +33,14 @@
             <tbody class="divide-y divide-gray-200 bg-white">
               @forelse ($movies as $movie)
               <tr>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500" data-rank="{{ $movie->imdb_rank }}">
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500" data-rank="{{ $movie->imdb_rating }}">
                   <a href="/movie/{{ $movie->tmdb_id }}" class="hover:underline">
                     {{ $movie->title_formatted }}
                   </a>
                 </td>
 
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  {{ $movie->genres }}
+                  {{ $movie->featured_at ?? '---' }}
                 </td>
 
                 <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">

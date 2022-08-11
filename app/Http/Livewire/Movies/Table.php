@@ -15,14 +15,18 @@ class Table extends Component
 
     public $title = '';
 
-    protected $queryString = ['title' => ['except' => '']];
+    protected $queryString = [
+        'title' => [
+            'except' => ''
+        ]
+    ];
 
     public function render()
     {
         return view('livewire.movies.table', [
             'movies' => Movie::query()
                 ->when(strlen($this->title) >= 3, fn ($q) => $q->titleLike($this->title))
-                ->imdbRank('asc')
+                ->imdbRating()
                 ->paginate(12),
         ]);
     }
@@ -32,12 +36,5 @@ class Table extends Component
         if (empty($value)) {
             $this->resetPage();
         }
-    }
-
-    public function import()
-    {
-        SimpleExcelReader::create(Storage::path('/exports/movies.xlsx'))
-            ->getRows()
-            ->each(fn ($movie) => FetchMovieData::dispatch($movie));
     }
 }

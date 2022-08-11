@@ -30,7 +30,6 @@ class Form extends Component
             'movie.tmdb_id' => ['nullable'],
             'movie.tmdb_poster_path' => ['nullable', 'string'],
             'movie.imdb_id' => ['nullable', 'string'],
-            'movie.imdb_rank' => ['nullable', 'string'],
             'movie.imdb_rating' => ['nullable', 'string'],
         ];
     }
@@ -83,6 +82,7 @@ class Form extends Component
         }
 
         $results = Http::retry(3, 300)
+            ->withHeaders(['Accept-Language' => 'en-US'])
             ->withToken(config('services.tmdb.token'))
             ->get(config('services.tmdb.api_url').'/search/movie?query='.$this->search)
             ->json()['results'];
@@ -93,7 +93,7 @@ class Form extends Component
                     ? config('services.tmdb.poster_url').'/w200/'.$result['poster_path']
                     : '/img/no-poster.png',
                 'year_released' => Carbon::parse($result['release_date'])->format('Y'),
-            ])->only(['id', 'poster_path', 'original_title', 'year_released', 'overview']);
+            ])->only(['id', 'poster_path', 'title', 'year_released', 'overview']);
         })->take(5);
     }
 

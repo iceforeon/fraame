@@ -59,7 +59,6 @@ class FetchMovieData implements ShouldQueue
                 'tmdb_poster_path' => $result['poster_path'],
                 'genres' => $genres,
                 'imdb_id' => $movie['imdb_id'],
-                'imdb_rank' => $movie['imdb_rank'],
                 'imdb_rating' => $movie['imdb_rating'],
             ]);
         }

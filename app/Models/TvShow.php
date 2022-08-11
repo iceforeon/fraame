@@ -28,7 +28,6 @@ class TvShow extends Model
         'frame_path',
         'tmdb_id',
         'imdb_id',
-        'imdb_rank',
         'imdb_rating',
         'posted_at',
     ];
@@ -65,5 +64,10 @@ class TvShow extends Model
     public function scopeImdbRank($query, $sort = 'asc')
     {
         return $query->orderBy('imdb_rank', $sort);
+    }
+
+    public function scopeHasPoster($query)
+    {
+        return $query->whereNotNull('poster_path');
     }
 }

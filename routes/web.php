@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemPosterController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,11 +18,24 @@ use Illuminate\Support\Facades\Route;
 Route::get('item-poster/{hashid}', [ItemPosterController::class, 'index'])
     ->name('item-poster');
 
-Route::get('/', fn () => view('welcome'));
-
 Route::get('dashboard', fn () => view('dashboard'))
     ->middleware('auth')
     ->name('dashboard');
+
+Route::get('/', fn () => view('home'))
+    ->name('home');
+
+Route::group([
+    'prefix' => 'spreadsheets',
+    'as' => 'spreadsheets.',
+    'middleware' => 'auth',
+], function () {
+    Route::get('scrape', fn () => view('spreadsheets.scrape'))
+        ->name('scrape');
+
+    Route::get('upload', fn () => view('spreadsheets.upload'))
+        ->name('upload');
+});
 
 Route::group([
     'prefix' => 'movies',

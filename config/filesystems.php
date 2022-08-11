@@ -63,6 +63,13 @@ return [
             'visibility' => 'public',
         ],
 
+        'spreadsheets' => [
+            'driver' => 'local',
+            'root' => storage_path('app/spreadsheets'),
+            'url' => env('APP_URL').'/spreadsheets',
+            'visibility' => 'public',
+        ],
+
     ],
 
     /*
@@ -79,6 +86,7 @@ return [
     'links' => [
         public_path('storage') => storage_path('app/public'),
         public_path('media') => storage_path('app/media'),
+        public_path('spreadsheets') => storage_path('app/spreadsheets'),
     ],
 
 ];

@@ -59,7 +59,6 @@ class FetchTvShowData implements ShouldQueue
                 'tmdb_poster_path' => $result['poster_path'],
                 'genres' => $genres,
                 'imdb_id' => $tvshow['imdb_id'],
-                'imdb_rank' => $tvshow['imdb_rank'],
                 'imdb_rating' => $tvshow['imdb_rating'],
             ]);
         }

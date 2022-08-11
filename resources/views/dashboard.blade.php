@@ -1,15 +1,25 @@
 <x-app-layout>
-  <x-slot name="header">
-    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-      {{ __('Dashboard') }}
-    </h2>
-  </x-slot>
-  <div class="py-12">
-    <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-      <div class="bg-white overflow-hidden shadow-sm">
-        <div class="p-6 bg-white border-b border-gray-200">
-          You're logged in!
+  <div class="py-6 sm:py-8">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+      <div>
+        <h3 class="text-lg leading-6 font-medium text-gray-900">Stats</h3>
+        <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <livewire:movies.stats />
+
+          <livewire:tv-shows.stats />
+
+          <livewire:animes.stats />
+
+          <livewire:users.stats />
+        </dl>
+      </div>
+
+      <div>
+        <div class="mt-5">
+          <h3 class="text-lg leading-6 font-medium text-gray-900">Spreadsheets</h3>
         </div>
+
+        <livewire:spreadsheets.table />
       </div>
     </div>
   </div>
