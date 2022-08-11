@@ -6,7 +6,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
-        "chrome-php/chrome": "^1.6",
         "doctrine/dbal": "^3.3",
         "guzzlehttp/guzzle": "^7.2",
         "hashids/hashids": "^4.1",
@@ -16,6 +15,7 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "livewire/livewire": "^2.10",
+        "spatie/browsershot": "^3.57",
         "spatie/simple-excel": "^2.1",
         "symfony/dom-crawler": "^6.1"
     },
