@@ -24,7 +24,7 @@ class Suggestion extends Component
             return view('livewire.home.suggestion', [
                 'item' => Movie::hasPoster()
                     ->inRandomOrder()
-                    ->first()
+                    ->first(),
             ]);
         }
 
@@ -32,7 +32,7 @@ class Suggestion extends Component
             return view('livewire.home.suggestion', [
                 'item' => TvShow::hasPoster()
                     ->inRandomOrder()
-                    ->first()
+                    ->first(),
             ]);
         }
     }

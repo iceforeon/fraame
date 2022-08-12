@@ -10,7 +10,7 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class Scraper extends Component
 {
-    public $strategy = null;
+    public $strategy;
 
     public $strategies = [
         'imdb250' => [

@@ -1,5 +1,5 @@
 <div>
-  <div class="bg-white overflow-hidden shadow-sm mt-5">
+  <div class="bg-white overflow-hidden shadow-sm mt-4">
     <div class="p-6 bg-white border-b border-gray-200">
       <div>
         <div class="flex item-center justify-between">
@@ -8,7 +8,7 @@
           </div>
 
           <div class="flex items-center justify-center space-x-5">
-            <a href="{{ route('spreadsheets.scrape') }}" class="text-gray-900 text-xs uppercase hover:underline focus:underline focus:outline-none tracking-widest transition ease-in-out duration-150 font-semibold">Scrape</a>
+            <a href="{{ route('spreadsheets.scrape') }}" class="hidden sm:inline-block text-gray-900 text-xs uppercase hover:underline focus:underline focus:outline-none tracking-widest transition ease-in-out duration-150 font-semibold">Scrape</a>
 
             <a href="{{ route('spreadsheets.upload') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
               Upload
@@ -19,7 +19,7 @@
         <div class="mt-6 flex flex-col space-y-4">
           <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-              <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5">
+              <div class="overflow-hidden shadow-sm ring-1 ring-black ring-opacity-5">
                 <table class="min-w-full divide-y divide-gray-300">
                   <thead class="bg-gray-50">
                     <tr>

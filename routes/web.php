@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemPosterController;
 use Illuminate\Support\Facades\Route;
 

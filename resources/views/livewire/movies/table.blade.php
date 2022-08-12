@@ -4,9 +4,9 @@
       <input wire:model.debounce.500ms="title" type="text" name="title" id="title" class="shadow-sm focus:ring-gray-500 focus:border-gray-500 block w-full sm:text-sm border-gray-300 placeholder:text-slate-400 placeholder:text-xs placeholder:tracking-wide" placeholder="SEARCH BY TITLE">
     </div>
 
-    <div>
-      <a href="{{ route('movies.create') }}" class="inline-flex items-center justify-center border border-transparent bg-gray-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 sm:w-auto">
-        New Movie
+    <div class="flex items-center">
+      <a href="{{ route('movies.create') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+        New <span class="hidden sm:inline-block sm:ml-1">Movie</span>
       </a>
     </div>
   </div>
@@ -21,11 +21,6 @@
                 <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
                   Title
                 </th>
-
-                <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                  Featured At
-                </th>
-
                 <th></th>
               </tr>
             </thead>
@@ -39,9 +34,9 @@
                   </a>
                 </td>
 
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                {{-- <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   {{ $movie->featured_at ?? '---' }}
-                </td>
+                </td> --}}
 
                 <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                   <div class="flex justify-end items-center space-x-3">

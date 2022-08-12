@@ -21,9 +21,9 @@ class CreateItemPoster extends Command
                 ->each(fn ($movie) => CreateItemPosterJob::dispatch($movie, ItemType::Movie));
         }
 
-        // if ($this->argument('type') == ItemType::Movie->value) {
-        //     TvShow::whereNull('poster_path')
-        //         ->each(fn ($tvshow) => CreateItemPosterJob::dispatch($tvshow, ItemType::TVShow));
-        // }
+        if ($this->argument('type') == ItemType::Movie->value) {
+            TvShow::whereNull('poster_path')
+                ->each(fn ($tvshow) => CreateItemPosterJob::dispatch($tvshow, ItemType::TVShow));
+        }
     }
 }

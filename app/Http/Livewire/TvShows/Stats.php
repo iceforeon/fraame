@@ -17,7 +17,7 @@ class Stats extends Component
                     <p class="text-2xl font-semibold text-gray-900">{{ \App\Models\TvShow::count() }}</p>
                     <div class="absolute bottom-0 inset-x-0 bg-gray-50 px-4 py-4 sm:px-6">
                         <div class="text-sm">
-                            <a href="{{ route('movies.index') }}" class="font-medium text-gray-600 hover:text-gray-500"> View all<span class="sr-only"> Total Subscribers stats</span></a>
+                            <a href="{{ route('movies.index') }}" class="font-medium text-gray-600 hover:text-gray-500 focus:underline focus:outline-none"> View all</a>
                         </div>
                     </div>
                 </dd>
@@ -25,4 +25,3 @@ class Stats extends Component
         blade;
     }
 }
-

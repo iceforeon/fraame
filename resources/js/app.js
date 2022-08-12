@@ -66,7 +66,7 @@ document.addEventListener("alpine:init", () => {
           extensions: [
             StarterKit,
             Placeholder.configure({
-              placeholder: 'Description...',
+              placeholder: 'Write your post description here...',
             }),
             Link.configure({
               linkOnPaste: true,

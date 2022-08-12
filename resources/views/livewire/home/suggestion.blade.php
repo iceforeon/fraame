@@ -7,7 +7,7 @@
           <div class="px-8 py-10 sm:p-10 flex items-center sm:justify-center flex-col">
             <div class="bg-cover absolute inset-0 blur-sm z-[-2] opacity-75" style="background-image: url('{{ config('services.tmdb.poster_url') . '/original/' . $item->tmdb_poster_path }}')"></div>
             <div class="absolute inset-0 bg-black bg-opacity-80 z-[-1]"></div>
-            {{-- <img src="{{ config('services.tmdb.poster_url') . '/w500/' . $item->tmdb_poster_path }}" alt="{{ $item->title }}" class="max-w-[250px] z-50"> --}}
+            <img src="{{ config('services.tmdb.poster_url') . '/w500/' . $item->tmdb_poster_path }}" alt="{{ $item->title }}" class="max-w-[250px] z-50">
             <div class="sm:px-8 mt-6 mb-4 sm:mb-2">
               <h1 class="font-bold text-xl tracking-wider sm:text-center text-white">{!! strlen($item->title) > 30 ? Str::replaceFirst(':', ':<br />', $item->title) : $item->title !!}</h1>
             </div>

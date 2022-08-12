@@ -2,12 +2,9 @@
 
 namespace App\Http\Livewire\Movies;
 
-use App\Jobs\FetchMovieData;
 use App\Models\Movie;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Spatie\SimpleExcel\SimpleExcelReader;
 
 class Table extends Component
 {
@@ -17,8 +14,8 @@ class Table extends Component
 
     protected $queryString = [
         'title' => [
-            'except' => ''
-        ]
+            'except' => '',
+        ],
     ];
 
     public function render()

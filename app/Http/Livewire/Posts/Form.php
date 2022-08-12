@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Posts;
 
+use App\Enums\ItemType;
 use App\Models\Post;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
@@ -12,6 +13,8 @@ class Form extends Component
     public $hashid;
 
     public $search;
+
+    public $type;
 
     public $results = [];
 
@@ -40,6 +43,8 @@ class Form extends Component
             $this->title = $post->title;
             $this->description = $post->description;
         }
+
+        $this->type = ItemType::Movie->value;
     }
 
     public function render()
@@ -68,6 +73,11 @@ class Form extends Component
         $this->results = strlen(trim($value)) > 3 ? $this->itemSearch() : [];
     }
 
+    public function updatedType()
+    {
+        $this->clear();
+    }
+
     public function itemSearch()
     {
         if ($this->search == 'iceforeon') {
@@ -82,18 +92,29 @@ class Form extends Component
             ]);
         }
 
+        $type = $this->type == ItemType::Movie->value ? 'movie' : 'tv';
+
         $results = Http::withToken(config('services.tmdb.token'))
-            ->get(config('services.tmdb.api_url').'/search/movie?query='.$this->search)
+            ->get(config('services.tmdb.api_url')."/search/{$type}?query=".$this->search)
             ->json()['results'];
 
-        return collect($results)->map(function ($result) {
-            return collect($result)->merge([
-                'poster_path' => $result['poster_path']
-                    ? config('services.tmdb.poster_url').'/w200/'.$result['poster_path']
-                    : '/img/no-poster.png',
-                'year_released' => Carbon::parse($result['release_date'])->format('Y'),
-            ])->only(['id', 'poster_path', 'original_title', 'year_released', 'overview']);
-        })->take(5);
+        return collect($results)
+            ->filter(fn ($result) => isset($result['release_date']) || isset($result['first_air_date']))
+            ->map(function ($result) {
+                return collect($result)->merge([
+                    'title' => $this->type == ItemType::Movie->value
+                        ? $result['title']
+                        : $result['name'],
+                    'poster_path' => $result['poster_path']
+                        ? config('services.tmdb.poster_url').'/w200/'.$result['poster_path']
+                        : '/img/no-poster.png',
+                    'year_released' => Carbon::parse(
+                        $this->type == ItemType::Movie->value
+                            ? $result['release_date']
+                            : $result['first_air_date']
+                    )->format('Y'),
+                ])->only(['id', 'poster_path', 'title', 'year_released', 'overview']);
+            })->take(5);
     }
 
     public function addItem($id)
@@ -102,15 +123,25 @@ class Form extends Component
             return $this->clear();
         }
 
+        $type = $this->type == ItemType::Movie->value
+            ? 'movie'
+            : 'tv';
+
         $item = Http::withToken(config('services.tmdb.token'))
-            ->get(config('services.tmdb.api_url').'/movie/'.$id)
+            ->get(config('services.tmdb.api_url')."/{$type}/".$id)
             ->json();
 
         $this->items[] = [
             'order' => count($this->items) + 1,
             'id' => $item['id'],
-            'original_title' => $item['original_title'],
-            'year_released' => Carbon::parse($item['release_date'])->format('Y'),
+            'title' => $this->type == ItemType::Movie->value
+                ? $item['title']
+                : $item['name'],
+            'year_released' => Carbon::parse(
+                $this->type == ItemType::Movie->value
+                    ? $item['release_date']
+                    : $item['first_air_date']
+            )->format('Y'),
         ];
 
         $this->clear();
@@ -119,7 +150,7 @@ class Form extends Component
     public function removeItem($id)
     {
         $this->items = collect($this->items)
-            ->filter(fn ($item) => $item['id'] !== $id)
+            ->filter(fn ($item) => $item['id'] !== (int) $id)
             ->toArray();
     }
 

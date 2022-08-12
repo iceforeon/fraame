@@ -19,8 +19,8 @@ class Table extends Component
 
     protected $queryString = [
         'title' => [
-            'except' => ''
-        ]
+            'except' => '',
+        ],
     ];
 
     public function render()
