@@ -19,7 +19,7 @@ sail npm run dev
 ### Notes
 
 ```
-Searching for movies can be done by `title` or `tmdbid`
+Movies can be queried by either `title` or `tmdbid`
 ```
 
 ### Attribution
