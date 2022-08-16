@@ -27,7 +27,9 @@
   @apply bg-gray-50;
 }
 
-/* .truncate {
-  @apply text-gray-500;
-} */
-
+.quantity::-webkit-inner-spin-button,
+.quantity::-webkit-outer-spin-button {
+  -moz-appearance: none;
+  appearance: none;
+  -webkit-appearance: none;
+}

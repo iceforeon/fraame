@@ -5,7 +5,6 @@ namespace App\Http\Livewire\Spreadsheets;
 use App\Enums\Category;
 use App\Jobs\FetchMovieData;
 use App\Jobs\FetchTvShowData;
-use App\Models\Movie;
 use App\Models\Spreadsheet;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;

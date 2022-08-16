@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('create/watchlist', fn () => view('watchlist'))
+    ->name('watchlist.create');
+
 Route::get('poster/{hashid}', [PosterController::class, 'index'])
     ->name('poster');
 

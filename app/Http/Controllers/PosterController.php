@@ -32,6 +32,6 @@ class PosterController extends Controller
             $item = TvShow::findOr($hashid, fn () => abort(404));
         }
 
-        return view('item-poster', ['item' => $item]);
+        return view('poster', ['item' => $item]);
     }
 }

@@ -19,7 +19,7 @@ sail npm run dev
 ### Notes
 
 ```
-Movies can be queried by either `title` or `tmdbid`
+When creating a new data, movies can be queried by either `title` or `tmdbid:{id}`
 ```
 
 ### Attribution
