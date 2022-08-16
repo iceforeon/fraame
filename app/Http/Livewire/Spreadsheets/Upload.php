@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Spreadsheets;
 
-use App\Enums\ItemType;
+use App\Enums\Category;
 use App\Models\Spreadsheet;
 use Illuminate\Validation\Rules\Enum;
 use Livewire\Component;
@@ -14,19 +14,19 @@ class Upload extends Component
 
     public $file;
 
-    public $type;
+    public $category;
 
     protected function rules()
     {
         return [
             'file' => ['required', 'file', 'max:5000', 'mimes:xlsx'],
-            'type' => ['nullable', new Enum(ItemType::class)],
+            'category' => ['nullable', new Enum(Category::class)],
         ];
     }
 
     public function mount()
     {
-        $this->type = ItemType::Movie->value;
+        $this->category = Category::Movie->value;
     }
 
     public function render()
@@ -44,7 +44,7 @@ class Upload extends Component
 
         $this->file->storeAs(DIRECTORY_SEPARATOR, $filename, 'spreadsheets');
 
-        Spreadsheet::create(['filename' => $filename, 'type' => $this->type]);
+        Spreadsheet::create(['filename' => $filename, 'category' => $this->category]);
 
         $this->redirectRoute('dashboard');
     }

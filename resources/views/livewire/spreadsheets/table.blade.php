@@ -4,7 +4,7 @@
       <div>
         <div class="flex item-center justify-between">
           <div class="sm:w-1/2 lg:w-1/3">
-            <input wire:model.debounce.500ms="search" type="text" name="search" id="search" class="shadow-sm focus:ring-gray-500 focus:border-gray-500 block w-full sm:text-sm border-gray-300 placeholder:text-slate-400 placeholder:text-xs placeholder:tracking-wide" placeholder="SEARCH BY FILENAME">
+            <input wire:model.debounce.500ms="filename" type="text" name="filename" id="filename" class="shadow-sm focus:ring-gray-500 focus:border-gray-500 block w-full sm:text-sm border-gray-300 placeholder:text-slate-400 placeholder:text-xs placeholder:tracking-wide" placeholder="SEARCH BY FILENAME">
           </div>
 
           <div class="flex items-center justify-center space-x-5">
@@ -28,7 +28,7 @@
                       </th>
 
                       <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                        Type
+                        Category
                       </th>
 
                       <th></th>
@@ -37,24 +37,26 @@
 
                   <tbody class="divide-y divide-gray-200 bg-white">
                     @forelse ($spreadsheets as $spreadsheet)
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <a href="{{ $spreadsheet->url }}" target="_blank" download class="text-sm hover:underline focus:underline focus:outline-none truncate">
-                        {{ $spreadsheet->filename }}
-                      </a>
-                    </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {{ $spreadsheet->type->name }}
-                    </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <div class="flex items-center justify-end divide-x divide-gray-200">
-                        <button wire:click="import('{{ $spreadsheet->hashid }}')" type="button" class="text-gray-900 font-semibold text-xs uppercase hover:underline focus:underline focus:outline-none tracking-widest transition ease-in-out duration-150">
-                          Import<span wire:loading wire:target="import">Importing...</span>
-                        </button>
-                        <button wire:click="delete('{{ $spreadsheet->hashid }}')" type="button" class="text-gray-900 font-semibold text-xs uppercase hover:underline focus:underline focus:outline-none tracking-widest transition ease-in-out duration-150 ml-3 pl-3">
-                          Delete
-                        </button>
-                      </div>
-                    </td>
+                    <tr>
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        <a href="{{ $spreadsheet->url }}" target="_blank" download class="text-sm hover:underline focus:underline focus:outline-none truncate">
+                          {{ $spreadsheet->filename }}
+                        </a>
+                      </td>
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        {{ $spreadsheet->category->name }}
+                      </td>
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        <div class="flex items-center justify-end divide-x divide-gray-200">
+                          <button wire:click="import('{{ $spreadsheet->hashid }}')" type="button" class="text-gray-900 font-semibold text-xs uppercase hover:underline focus:underline focus:outline-none tracking-widest transition ease-in-out duration-150">
+                            Import</span>
+                          </button>
+                          <button wire:click="delete('{{ $spreadsheet->hashid }}')" type="button" class="text-gray-900 font-semibold text-xs uppercase hover:underline focus:underline focus:outline-none tracking-widest transition ease-in-out duration-150 ml-3 pl-3">
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
                     @empty
                     <tr>
                       <td class="text-center w-full">---</td>

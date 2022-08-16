@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id()->from(1000);
             $table->string('hashid')->nullable()->unique();
             $table->string('filename');
-            $table->string('type')->default('movie');
+            $table->string('category')->default('movie');
             $table->timestamps();
         });
     }

@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Enums\ItemType;
+use App\Enums\Category;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
@@ -14,21 +14,23 @@ use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Spatie\Browsershot\Browsershot;
 
-class CreateItemPoster implements ShouldQueue
+class CreatePoster implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
 
-    public function __construct(public Model $model, public ItemType $type)
+    public $deleteWhenMissingModels = true;
+
+    public function __construct(public Model $model, public Category $category)
     {
     }
 
     public function handle()
     {
         try {
-            $base64Image = Browsershot::url(route('item-poster', $this->model->hashid).'?key='.config('app.poster_route_key').'&type='.$this->type->value)
+            $base64Image = Browsershot::url(route('poster', $this->model->hashid).'?key='.config('app.poster_route_key').'&category='.$this->category->value)
                 ->noSandbox()
                 ->waitUntilNetworkIdle()
                 ->select('#poster')

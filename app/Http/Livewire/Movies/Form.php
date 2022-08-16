@@ -2,12 +2,13 @@
 
 namespace App\Http\Livewire\Movies;
 
-use App\Enums\ItemType;
-use App\Jobs\CreateItemPoster;
+use App\Enums\Category;
+use App\Jobs\CreatePoster;
 use App\Models\Movie;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
 class Form extends Component
@@ -64,7 +65,7 @@ class Form extends Component
 
     public function updatedSearch($value)
     {
-        $this->results = strlen(trim($value)) > 3 ? $this->searchMovie() : [];
+        $this->results = strlen(trim($value)) > 2 ? $this->searchMovie() : [];
     }
 
     public function searchMovie()
@@ -81,11 +82,19 @@ class Form extends Component
             ]);
         }
 
-        $results = Http::retry(3, 300)
-            ->withHeaders(['Accept-Language' => 'en-US'])
-            ->withToken(config('services.tmdb.token'))
-            ->get(config('services.tmdb.api_url').'/search/movie?query='.$this->search)
-            ->json()['results'];
+        if (Str::contains($this->search, 'tmdbid:')) {
+            $id = explode('tmdbid:', $this->search)[1];
+            $results[] = Http::retry(3, 300)
+                ->withToken(config('services.tmdb.token'))
+                ->get(config('services.tmdb.api_url').'/movie/'.$id)
+                ->json();
+        } else {
+            $results = Http::retry(3, 300)
+                ->withHeaders(['Accept-Language' => 'en-US'])
+                ->withToken(config('services.tmdb.token'))
+                ->get(config('services.tmdb.api_url').'/search/movie?query='.$this->search)
+                ->json()['results'];
+        }
 
         return collect($results)->map(function ($result) {
             return collect($result)->merge([
@@ -100,7 +109,7 @@ class Form extends Component
     public function pickMovie($id)
     {
         if ($id == 'ife133769420') {
-            return $this->reset(['search', 'results']);
+            return $this->clear();
         }
 
         $movie = Http::retry(3, 300)
@@ -119,12 +128,12 @@ class Form extends Component
         $this->movie->tmdb_id = $movie['id'];
         $this->movie->tmdb_poster_path = $movie['poster_path'];
 
-        $this->reset(['search', 'results']);
+        $this->clear();
     }
 
     public function generatePoster()
     {
-        CreateItemPoster::dispatch($this->movie->hashid, ItemType::Movie);
+        CreatePoster::dispatch($this->movie->hashid, Category::Movie);
     }
 
     public function removePoster()
@@ -132,5 +141,10 @@ class Form extends Component
         Storage::disk('media')->delete($this->movie->poster_path);
 
         $this->movie->update(['poster_path' => null]);
+    }
+
+    public function clear()
+    {
+        $this->reset(['search', 'results']);
     }
 }

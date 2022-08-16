@@ -16,6 +16,12 @@ sail npm install
 sail npm run dev
 ```
 
+### Notes
+
+```
+Searching for movies can be done by `title` or `tmdbid`
+```
+
 ### Attribution
 
 [TMDB](https://www.themoviedb.org)

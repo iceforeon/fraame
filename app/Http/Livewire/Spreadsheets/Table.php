@@ -2,9 +2,10 @@
 
 namespace App\Http\Livewire\Spreadsheets;
 
-use App\Enums\ItemType;
+use App\Enums\Category;
 use App\Jobs\FetchMovieData;
 use App\Jobs\FetchTvShowData;
+use App\Models\Movie;
 use App\Models\Spreadsheet;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -15,10 +16,10 @@ class Table extends Component
 {
     use WithPagination;
 
-    public $title = '';
+    public $filename = '';
 
     protected $queryString = [
-        'title' => [
+        'filename' => [
             'except' => '',
         ],
     ];
@@ -27,7 +28,7 @@ class Table extends Component
     {
         return view('livewire.spreadsheets.table', [
             'spreadsheets' => Spreadsheet::query()
-                ->when(strlen($this->title) >= 3, fn ($q) => $q->titleLike($this->title))
+                ->when(strlen($this->filename) >= 3, fn ($q) => $q->filenameLike($this->filename))
                 ->latest()
                 ->paginate(12),
         ]);
@@ -44,13 +45,13 @@ class Table extends Component
 
         $path = Storage::disk('spreadsheets')->path($spreadsheet->filename);
 
-        if ($spreadsheet->type == ItemType::Movie) {
+        if ($spreadsheet->category == Category::Movie) {
             SimpleExcelReader::create($path)
                 ->getRows()
                 ->each(fn ($movie) => FetchMovieData::dispatch($movie));
         }
 
-        if ($spreadsheet->type == ItemType::TVShow) {
+        if ($spreadsheet->category == Category::TVShow) {
             SimpleExcelReader::create($path)
                 ->getRows()
                 ->each(fn ($tvshow) => FetchTvShowData::dispatch($tvshow));

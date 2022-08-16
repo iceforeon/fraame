@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ItemType;
+use App\Enums\Category;
 use App\Models\Movie;
 use App\Models\TvShow;
 
-class ItemPosterController extends Controller
+class PosterController extends Controller
 {
     public function index($hashid)
     {
-        if (! request()->hasAny(['key', 'type'])) {
+        if (! request()->hasAny(['key', 'category'])) {
             abort(404);
         }
 
@@ -18,17 +18,17 @@ class ItemPosterController extends Controller
             abort(404);
         }
 
-        $itemType = ItemType::tryFrom(request()->get('type'));
+        $category = Category::tryFrom(request()->get('type'));
 
-        if (is_null($itemType)) {
+        if (is_null($category)) {
             abort(404);
         }
 
-        if ($itemType == ItemType::Movie) {
+        if ($category == Category::Movie) {
             $item = Movie::findOr($hashid, fn () => abort(404));
         }
 
-        if ($itemType == ItemType::TVShow) {
+        if ($category == Category::TVShow) {
             $item = TvShow::findOr($hashid, fn () => abort(404));
         }
 

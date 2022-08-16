@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Posts;
 
-use App\Enums\ItemType;
+use App\Enums\Category;
 use App\Models\Post;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
@@ -14,7 +14,7 @@ class Form extends Component
 
     public $search;
 
-    public $type;
+    public $category;
 
     public $results = [];
 
@@ -44,7 +44,7 @@ class Form extends Component
             $this->description = $post->description;
         }
 
-        $this->type = ItemType::Movie->value;
+        $this->category = Category::Movie->value;
     }
 
     public function render()
@@ -73,7 +73,7 @@ class Form extends Component
         $this->results = strlen(trim($value)) > 3 ? $this->itemSearch() : [];
     }
 
-    public function updatedType()
+    public function updatedCategory()
     {
         $this->clear();
     }
@@ -92,24 +92,24 @@ class Form extends Component
             ]);
         }
 
-        $type = $this->type == ItemType::Movie->value ? 'movie' : 'tv';
+        $category = $this->category == Category::Movie->value ? 'movie' : 'tv';
 
         $results = Http::withToken(config('services.tmdb.token'))
-            ->get(config('services.tmdb.api_url')."/search/{$type}?query=".$this->search)
+            ->get(config('services.tmdb.api_url')."/search/{$category}?query=".$this->search)
             ->json()['results'];
 
         return collect($results)
             ->filter(fn ($result) => isset($result['release_date']) || isset($result['first_air_date']))
             ->map(function ($result) {
                 return collect($result)->merge([
-                    'title' => $this->type == ItemType::Movie->value
+                    'title' => $this->category == Category::Movie->value
                         ? $result['title']
                         : $result['name'],
                     'poster_path' => $result['poster_path']
                         ? config('services.tmdb.poster_url').'/w200/'.$result['poster_path']
                         : '/img/no-poster.png',
                     'year_released' => Carbon::parse(
-                        $this->type == ItemType::Movie->value
+                        $this->category == Category::Movie->value
                             ? $result['release_date']
                             : $result['first_air_date']
                     )->format('Y'),
@@ -123,22 +123,22 @@ class Form extends Component
             return $this->clear();
         }
 
-        $type = $this->type == ItemType::Movie->value
+        $category = $this->category == Category::Movie->value
             ? 'movie'
             : 'tv';
 
         $item = Http::withToken(config('services.tmdb.token'))
-            ->get(config('services.tmdb.api_url')."/{$type}/".$id)
+            ->get(config('services.tmdb.api_url')."/{$category}/".$id)
             ->json();
 
         $this->items[] = [
             'order' => count($this->items) + 1,
             'id' => $item['id'],
-            'title' => $this->type == ItemType::Movie->value
+            'title' => $this->category == Category::Movie->value
                 ? $item['title']
                 : $item['name'],
             'year_released' => Carbon::parse(
-                $this->type == ItemType::Movie->value
+                $this->category == Category::Movie->value
                     ? $item['release_date']
                     : $item['first_air_date']
             )->format('Y'),

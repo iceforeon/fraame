@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ItemPosterController;
+use App\Http\Controllers\PosterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('item-poster/{hashid}', [ItemPosterController::class, 'index'])
-    ->name('item-poster');
+Route::get('poster/{hashid}', [PosterController::class, 'index'])
+    ->name('poster');
 
 Route::get('dashboard', fn () => view('dashboard'))
     ->middleware('auth')

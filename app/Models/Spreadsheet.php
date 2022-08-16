@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\ItemType;
+use App\Enums\Category;
 use App\Traits\Hashid;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
@@ -18,11 +18,11 @@ class Spreadsheet extends Model
 
     protected $fillable = [
         'filename',
-        'type',
+        'category',
     ];
 
     protected $casts = [
-        'type' => ItemType::class,
+        'category' => Category::class,
     ];
 
     public function url(): Attribute

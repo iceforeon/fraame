@@ -2,25 +2,25 @@
 
 namespace App\Http\Livewire\Home;
 
-use App\Enums\ItemType;
+use App\Enums\Category;
 use App\Models\Movie;
 use App\Models\TvShow;
 use Livewire\Component;
 
 class Suggestion extends Component
 {
-    public $type;
+    public $category;
 
     protected $listeners = ['refreshComponent' => '$refresh'];
 
     public function mount()
     {
-        $this->type = ItemType::Movie->value;
+        $this->category = Category::Movie->value;
     }
 
     public function render()
     {
-        if ($this->type == ItemType::Movie->value) {
+        if ($this->category == Category::Movie->value) {
             return view('livewire.home.suggestion', [
                 'item' => Movie::hasPoster()
                     ->inRandomOrder()
@@ -28,7 +28,7 @@ class Suggestion extends Component
             ]);
         }
 
-        if ($this->type == ItemType::TVShow->value) {
+        if ($this->category == Category::TVShow->value) {
             return view('livewire.home.suggestion', [
                 'item' => TvShow::hasPoster()
                     ->inRandomOrder()
@@ -39,9 +39,7 @@ class Suggestion extends Component
 
     public function updatedType($value)
     {
-        $itemType = ItemType::tryFrom($value);
-
-        if (is_null($itemType)) {
+        if (is_null(Category::tryFrom($value))) {
             abort(404);
         }
     }

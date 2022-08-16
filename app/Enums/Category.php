@@ -2,17 +2,17 @@
 
 namespace App\Enums;
 
-enum ItemType: string
+enum Category: string
 {
     case Movie = 'movie';
     case TVShow = 'tvshow';
     case Anime = 'anime';
 
-    public static function tmdbTypes()
+    public static function tmdbCategories()
     {
         return [
-            ItemType::Movie,
-            ItemType::TVShow,
+            self::Movie,
+            self::TVShow,
         ];
     }
 }
