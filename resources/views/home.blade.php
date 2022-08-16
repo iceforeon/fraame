@@ -26,7 +26,7 @@
   </header>
 
   <section class="flex justify-center mt-5 grow shrink-0 basis-auto">
-    <livewire:home.suggestion />
+    Yo!
   </section>
 
   <footer class="shrink-0">
