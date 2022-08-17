@@ -39,7 +39,7 @@
 
   <footer class="shrink-0">
     <div class="bg-white">
-      <div class="relative max-w-3xl mx-auto flex items-center justify-between py-4 px-4 mt-5">
+      <div class="max-w-3xl mx-auto flex items-center justify-between py-4 px-4 mt-5">
         <div>
           <p class="uppercase text-xs tracking-wider">{{ config('app.name', 'Fraame') . ' ' . date('Y') }}</p>
         </div>
