@@ -16,7 +16,8 @@ class Profile extends Component
     {
         return [
             'name' => ['required', 'string', 'max:50', 'regex:/^[a-zA-Z ]*$/'],
-            'username' => ['required', 'string', 'max:25', 'alpha_num'],
+            'username' => ['required', 'string', 'min:3', 'max:25', 'alpha_num', 'unique:users,username,'.request()->user()->hashid],
+            'email' => ['nullable', 'email', 'unique:users,email,'.request()->user()->hashid],
             'description' => ['nullable', 'string', 'max:255'],
         ];
     }
@@ -25,6 +26,7 @@ class Profile extends Component
     {
         $this->name = request()->user()->name;
         $this->username = request()->user()->username;
+        $this->email = request()->user()->email;
         $this->description = request()->user()->description;
     }
 
@@ -40,6 +42,7 @@ class Profile extends Component
         request()->user()->update([
             'name' => $this->name,
             'username' => $this->username,
+            'email' => $this->email,
             'description' => $this->description,
         ]);
     }

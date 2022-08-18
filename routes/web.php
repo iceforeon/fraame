@@ -21,13 +21,13 @@ Route::get('poster/{hashid}', [PosterController::class, 'index'])
     ->name('poster');
 
 Route::get('dashboard', fn () => view('dashboard'))
-    ->middleware('auth')
+    ->middleware(['auth', 'roles:developer'])
     ->name('dashboard');
 
 Route::group([
     'prefix' => 'spreadsheets',
     'as' => 'spreadsheets.',
-    'middleware' => 'auth',
+    'middleware' => ['auth', 'roles:developer'],
 ], function () {
     Route::get('scrape', fn () => view('spreadsheets.scrape'))
         ->name('scrape');
@@ -39,7 +39,7 @@ Route::group([
 Route::group([
     'prefix' => 'movies',
     'as' => 'movies.',
-    'middleware' => 'auth',
+    'middleware' => ['auth', 'roles:developer'],
 ], function () {
     Route::get('/', fn () => view('movies.index'))
         ->name('index');
@@ -54,22 +54,22 @@ Route::group([
 Route::group([
     'prefix' => 'tv-shows',
     'as' => 'tv-shows.',
-    'middleware' => 'auth',
+    'middleware' => ['auth', 'roles:developer'],
 ], function () {
-    Route::get('/', fn () => view('tv-show.index'))
+    Route::get('/', fn () => view('tv-shows.index'))
         ->name('index');
 
-    Route::get('create', fn () => view('tv-show.create'))
+    Route::get('create', fn () => view('tv-shows.create'))
         ->name('create');
 
-    Route::get('{hashid}/edit', fn ($hashid) => view('tv-show.edit', ['hashid' => $hashid]))
+    Route::get('{hashid}/edit', fn ($hashid) => view('tv-shows.edit', ['hashid' => $hashid]))
         ->name('edit');
 });
 
 Route::group([
     'prefix' => 'animes',
     'as' => 'animes.',
-    'middleware' => 'auth',
+    'middleware' => ['auth', 'roles:developer'],
 ], function () {
     Route::get('/', fn () => view('animes.index'))
         ->name('index');
@@ -93,6 +93,21 @@ Route::group([
         ->name('create');
 
     Route::get('{hashid}/edit', fn ($hashid) => view('watchlists.edit', ['hashid' => $hashid]))
+        ->name('edit');
+});
+
+Route::group([
+    'prefix' => 'users',
+    'as' => 'users.',
+    'middleware' => ['auth', 'roles:developer'],
+], function () {
+    Route::get('/', fn () => view('users.index'))
+        ->name('index');
+
+    Route::get('create', fn () => view('users.create'))
+        ->name('create');
+
+    Route::get('{hashid}/edit', fn ($hashid) => view('users.edit', ['hashid' => $hashid]))
         ->name('edit');
 });
 

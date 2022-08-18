@@ -97,9 +97,7 @@ class Form extends Component
         }
 
         return collect($results)
-            ->filter(function ($result) {
-                return isset($result['release_date']);
-            })
+            ->filter(fn ($result) => isset($result['release_date']))
             ->map(function ($result) {
                 return collect($result)->merge([
                     'poster_path' => $result['poster_path']

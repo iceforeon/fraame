@@ -1,4 +1,4 @@
-<div class="border-t border-gray-200 pt-6">
+<div>
   <form wire:submit.prevent="update">
     <pre class="mb-4">{{ $errors }}</pre>
     <h3 class="text-lg leading-6 font-medium text-gray-900">Password Settings</h3>

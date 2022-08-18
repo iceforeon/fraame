@@ -9,8 +9,15 @@ class Featured extends Component
 {
     public function render()
     {
+        // select title, tmdb_poster_path, year_released
+        // join movies, tvshows, animes
+
         return view('livewire.home.featured', [
-            'items' => Movie::whereNotNull('poster_path')->inRandomOrder()->get()->take(3),
+            'items' => Movie::query()
+                ->todaysFeatured()
+                ->inRandomOrder()
+                ->get()
+                ->take(3),
         ]);
     }
 }

@@ -35,15 +35,11 @@ class FetchAnimeData implements ShouldQueue
             ->get(config('services.tmdb.api_url').'/search/tv?query='.$anime['title'])
             ->json()['results'];
 
-        info($anime['year_released']);
-
         $result = collect($results)
             ->filter(fn ($result) => in_array(16, $result['genre_ids']))
             ->filter(fn ($result) => isset($result['first_air_date'], $anime['year_released']))
             ->filter(fn ($result) => str_contains($result['first_air_date'], (string) $anime['year_released']))
             ->first();
-
-        info($result);
 
         $animeGenres = collect($animeGenres)
             ->mapWithKeys(fn ($genre) => [$genre['id'] => $genre['name']]);

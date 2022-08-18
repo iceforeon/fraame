@@ -36,7 +36,9 @@ class Table extends Component
 
     public function delete($hashid)
     {
-        dd($hashid);
+        Spreadsheet::find($hashid)->delete();
+
+        $this->redirectRoute('dashboard');
     }
 
     public function import($hashid)

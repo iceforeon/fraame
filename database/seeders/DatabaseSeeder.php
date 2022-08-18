@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +15,15 @@ class DatabaseSeeder extends Seeder
             'username' => 'ife',
             'email' => 'iceforeon@gmail.com',
             'password' => bcrypt('password'),
+            'role' => Role::Developer->value,
+        ]);
+
+        User::create([
+            'name' => 'Yo',
+            'username' => 'yo',
+            'email' => 'yo@gmail.com',
+            'password' => bcrypt('password'),
+            'role' => Role::Guest->value,
         ]);
     }
 }

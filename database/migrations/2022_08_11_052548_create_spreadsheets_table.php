@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('spreadsheets', function (Blueprint $table) {
             $table->id()->from(1000);
             $table->string('hashid')->nullable()->unique();
-            $table->string('filename');
+            $table->string('filename')->index();
             $table->string('category')->default('movie');
             $table->timestamps();
         });

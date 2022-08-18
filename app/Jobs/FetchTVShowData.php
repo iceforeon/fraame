@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\TvShow;
+use App\Models\TVShow;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -10,20 +10,20 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 
-class FetchTvShowData implements ShouldQueue
+class FetchTVShowData implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
 
-    public function __construct(public $tvshow)
+    public function __construct(public $tvShow)
     {
     }
 
     public function handle()
     {
-        $tvshow = $this->tvshow;
+        $tvShow = $this->tvShow;
 
         $tvShowGenres = Http::retry(3, 300)
             ->withToken(config('services.tmdb.token'))
@@ -32,12 +32,12 @@ class FetchTvShowData implements ShouldQueue
 
         $results = Http::retry(3, 300)
             ->withToken(config('services.tmdb.token'))
-            ->get(config('services.tmdb.api_url').'/search/tv?query='.$tvshow['title'])
+            ->get(config('services.tmdb.api_url').'/search/tv?query='.$tvShow['title'])
             ->json()['results'];
 
         $result = collect($results)
-            ->filter(fn ($result) => isset($result['first_air_date'], $tvshow['year_released']))
-            ->filter(fn ($result) => str_contains($result['first_air_date'], $tvshow['year_released']))
+            ->filter(fn ($result) => isset($result['first_air_date'], $tvShow['year_released']))
+            ->filter(fn ($result) => str_contains($result['first_air_date'], $tvShow['year_released']))
             ->first();
 
         $tvShowGenres = collect($tvShowGenres)
@@ -49,7 +49,7 @@ class FetchTvShowData implements ShouldQueue
                     ->mapWithKeys(fn ($value) => [$value => $tvShowGenres[$value]])->implode(', ')
                 : null;
 
-            TvShow::updateOrCreate([
+            TVShow::updateOrCreate([
                 'tmdb_id' => $result['id'],
             ], [
                 'title' => $result['name'],

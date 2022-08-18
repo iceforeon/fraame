@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\TvShows;
 
-use App\Models\TvShow;
+use App\Models\TVShow;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -17,7 +17,7 @@ class Table extends Component
     public function render()
     {
         return view('livewire.tv-shows.table', [
-            'tvshows' => TvShow::query()
+            'tvshows' => TVShow::query()
                 ->when(strlen($this->title) >= 3, fn ($q) => $q->titleLike($this->title))
                 ->imdbRating()
                 ->paginate(12),

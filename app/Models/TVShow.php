@@ -10,11 +10,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 
-class TvShow extends Model
+class TVShow extends Model
 {
     use Hashid;
     use Sluggable;
     use HasFactory;
+
+    protected $table = 'tv_shows';
 
     protected $primaryKey = 'hashid';
 

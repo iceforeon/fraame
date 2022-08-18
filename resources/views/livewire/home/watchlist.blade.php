@@ -163,12 +163,7 @@
 
           <div x-cloak x-show="open" x-on:click="open = false" class="origin-top-right absolute bottom-0 sm:bottom-auto mb-[46px] sm:mb-0 right-0 sm:mt-2 w-56 rounded-sm shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10" role="menu" aria-orientation="vertical" aria-labelledby="option-menu-button" tabindex="-1">
             <div class="py-1" role="none">
-              @auth
-              <button type="button" class="w-full text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 transition duration-150 ease-in-out text-left" role="menuitem" tabindex="-1" id="option-menu-item-1">Save to watchlist</button>
-              @endauth
-
               <button wire:click="export" type="button" class="w-full text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 transition duration-150 ease-in-out text-left" role="menuitem" tabindex="-1" id="option-menu-item-2">Export to text file</button>
-
               <button x-on:click="navigator.share({ title: '{{ $title ?? 'Untitled' }}', text: 'Sup' })" type="button" class="w-full text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 transition duration-150 ease-in-out text-left" role="menuitem" tabindex="-1" id="option-menu-item-0">Share to...</button>
             </div>
           </div>

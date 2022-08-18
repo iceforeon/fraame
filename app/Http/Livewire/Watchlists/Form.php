@@ -56,7 +56,7 @@ class Form extends Component
     {
         $this->validate();
 
-        $watchlist = Watchlist::updateOrCreate([
+        Watchlist::updateOrCreate([
             'hashid' => $this->hashid,
             'user_id' => request()->user()->id,
         ], [
@@ -161,11 +161,11 @@ class Form extends Component
     public function delete()
     {
         if (
-            $this->hashid && $post = request()->user()->posts()->findOr($this->hashid, fn () => abort(404))
+            $this->hashid && $watchlist = request()->user()->watchlists()->where('hashid', $this->hashid)
         ) {
-            $post->delete();
+            $watchlist->delete();
         }
 
-        $this->redirectRoute('posts.index');
+        $this->redirectRoute('watchlists.index');
     }
 }

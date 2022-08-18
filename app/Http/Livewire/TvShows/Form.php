@@ -3,7 +3,7 @@
 namespace App\Http\Livewire\TvShows;
 
 use App\Enums\Category;
-use App\Models\TvShow;
+use App\Models\TVShow;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -37,7 +37,7 @@ class Form extends Component
     public function mount()
     {
         $this->tvshow = $this->hashid
-            ? TvShow::findOr($this->hashid, fn () => abort(404))
+            ? TVShow::findOr($this->hashid, fn () => abort(404))
             : (new TvShow);
     }
 
@@ -52,14 +52,14 @@ class Form extends Component
 
         $this->tvshow->save();
 
-        $this->redirectRoute('tv-shows.index');
+        $this->redirectRoute('tvshows.index');
     }
 
     public function delete()
     {
-        TvShow::find($this->tvshow->hashid)->delete();
+        TVShow::find($this->tvshow->hashid)->delete();
 
-        $this->redirectRoute('tv-shows.index');
+        $this->redirectRoute('tvshows.index');
     }
 
     public function updatedSearch($value)

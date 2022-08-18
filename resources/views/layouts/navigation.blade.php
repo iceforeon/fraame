@@ -3,11 +3,10 @@
     <div class="flex justify-between h-16">
       <div class="flex">
         <div class="shrink-0 flex items-center">
-          <a href="{{ route('dashboard') }}" class="text-gray-900 font-bold">
-            {{ config('app.name') }}
-          </a>
+          <a href="/" class="text-gray-900 font-bold">{{ config('app.name') }}</a>
         </div>
         <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+          @if (auth()->user()->isDeveloper())
           <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
             {{ __('Dashboard') }}
           </x-nav-link>
@@ -20,6 +19,7 @@
           <x-nav-link :href="route('animes.index')" :active="request()->routeIs('animes.index')">
             {{ __('Animes') }}
           </x-nav-link>
+          @endif
           <x-nav-link :href="route('watchlists.index')" :active="request()->routeIs('watchlists.index')">
             {{ __('Watchlists') }}
           </x-nav-link>

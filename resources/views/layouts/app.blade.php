@@ -17,13 +17,20 @@
       </div>
       <ul class="flex items-center space-x-4">
         @auth
+        @if (auth()->user()->isDeveloper())
         <li>
-          <a href="/dashboard" class="uppercase text-xs hover:underline tracking-wider transition ease-in-out duration-150">dashboard</a>
+          <a href="{{ route('dashboard') }}" class="uppercase text-xs hover:underline tracking-wider transition ease-in-out duration-150">dashboard</a>
         </li>
+        @endif
+        @if (! auth()->user()->isDeveloper())
+        <li>
+          <a href="{{ route('watchlists.index') }}" class="uppercase text-xs hover:underline tracking-wider transition ease-in-out duration-150">watchlists</a>
+        </li>
+        @endif
         @endauth
         @guest
         <li>
-          <a href="/login" class="uppercase text-xs hover:underline tracking-wider transition ease-in-out duration-150">login</a>
+          <a href="{{ route('login') }}" class="uppercase text-xs hover:underline tracking-wider transition ease-in-out duration-150">login</a>
         </li>
         @endguest
       </ul>
