@@ -22,7 +22,7 @@
           <div class="absolute inset-y-0 right-0 flex items-center">
             <label for="category" class="sr-only">Category</label>
             <select wire:model="category" tabindex="-1" id="category" name="category" class="focus:ring-gray-500 focus:border-gray-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-sm">
-              @foreach (\App\Enums\Category::tmdbCategories() as $category)
+              @foreach (\App\Enums\Category::cases() as $category)
               <option value="{{ $category->value }}">{{ str($category->name)->when(str($category->name)->contains('TV'), fn ($str) => $str->replace('TV', 'TV '))->plural() }}</option>
               @endforeach
             </select>
@@ -265,14 +265,12 @@
       </div>
     </div>
 
-    <div @class([
-      'flex items-center mt-4 pt-4',
-      'justify-end' => ! $hashid,
+    <div @class([ 'flex items-center mt-4 pt-4' , 'justify-end'=> ! $hashid,
       'justify-between' => $hashid
-    ])>
+      ])>
       @if ($hashid)
-      <button wire:click="delete" type="button" class="underline text-sm text-red-600 hover:text-red-700">
-        Delete Post
+      <button wire:click="delete" type="button" class="text-gray-900 font-semibold text-xs uppercase hover:underline focus:underline focus:outline-none tracking-widest transition ease-in-out duration-150" tabindex="-1">
+        Delete
       </button>
       @endif
 

@@ -12,9 +12,10 @@ return new class extends Migration
             $table->id()->from(1000);
             $table->string('name');
             $table->string('username')->unique();
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('email')->nullable()->unique();
+            $table->text('description')->nullable();
+            $table->string('password')->nullable();
+            $table->string('facebook_id')->nullable()->unique();
             $table->rememberToken();
             $table->timestamps();
         });

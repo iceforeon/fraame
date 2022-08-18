@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Livewire\Posts;
+namespace App\Http\Livewire\Animes;
 
+use App\Models\Anime;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -15,11 +16,10 @@ class Table extends Component
 
     public function render()
     {
-        return view('livewire.posts.table', [
-            'posts' => request()
-                ->user()
-                ->posts()
-                ->when(strlen($this->title) > 3, fn ($q) => $q->titleLike($this->title))
+        return view('livewire.animes.table', [
+            'animes' => Anime::query()
+                ->when(strlen($this->title) >= 3, fn ($q) => $q->titleLike($this->title))
+                ->imdbRating()
                 ->paginate(12),
         ]);
     }

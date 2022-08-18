@@ -29,8 +29,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function posts()
+    public function hasPassword()
     {
-        return $this->hasMany(Post::class);
+        return ! is_null($this->password);
+    }
+
+    public function watchlists()
+    {
+        return $this->hasMany(Watchlist::class);
     }
 }

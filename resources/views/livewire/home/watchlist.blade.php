@@ -1,4 +1,4 @@
-<div x-data="{ showSearch: $wire.entangle('showSearch') }">
+<div x-data="{ showSearch: $wire.entangle('showSearch'), open: false }">
   <div x-cloak x-ref="search-form" x-show="showSearch"">
     <div class="relative rounded-sm shadow-sm mb-2">
       <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
@@ -17,6 +17,14 @@
           <line x1="60.1" y1="60.1" x2="82.7" y2="82.7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line>
         </svg>
       </div>
+
+      @if ($search)
+        <button class="absolute inset-y-0 right-0 pr-2" wire:click="clear">
+          <svg wire:loading.remove wire:target="search" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        @endif
 
       <input x-ref="search" wire:model.debounce.500ms="search" type="text" name="search" id="search" class="focus:ring-gray-500 focus:border-gray-500 block w-full pl-8 pr-12 sm:text-sm border-gray-300 rounded-sm" placeholder="Search in {{ str($category)->when(str($category)->contains('tv'), fn ($str) => $str->replace('tv', 'tv '))->plural() }}...">
 
@@ -136,14 +144,14 @@
       <button wire:click="clear" tabindex="-1" type="button" class="text-gray-900 font-semibold text-xs uppercase hover:underline focus:underline focus:outline-none tracking-widest ">Reset</button>
     @endif
 
-    <div x-title="button-dropdown" x-data="{ open: false }" x-on:click.outside="open = false" x-on:close.stop="open = false">
-      <div class="w-full relative z-0 inline-flex shadow-sm rounded-sm">
-        <button wire:click="generate" type="button" class="w-full relative inline-flex items-center px-4 py-2 rounded-l-sm border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500">
+    <div x-title="button-dropdown" x-on:click.outside="open = false" x-on:close.stop="open = false">
+      <div class="w-full relative inline-flex shadow-sm rounded-sm">
+        <button wire:click="generate" type="button" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 z-0 focus:z-10">
           <span wire:loading.remove wire:target="generate">Random</span>
           <span wire:loading wire:target="generate">Loading...</span>
         </button>
         <div class="-ml-px relative block">
-          <button x-on:click="open = ! open" type="button" class="relative inline-flex items-center px-2 py-2 rounded-r-sm border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500" id="option-menu-button" aria-expanded="true" aria-haspopup="true">
+          <button x-on:click="open = ! open" type="button" class="inline-flex items-center px-2 py-2 bg-gray-800 border border-transparent font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 z-20" aria-expanded="true" aria-haspopup="true">
             <span class="sr-only">Open options</span>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden sm:block" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -155,7 +163,9 @@
 
           <div x-cloak x-show="open" x-on:click="open = false" class="origin-top-right absolute bottom-0 sm:bottom-auto mb-[46px] sm:mb-0 right-0 sm:mt-2 w-56 rounded-sm shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10" role="menu" aria-orientation="vertical" aria-labelledby="option-menu-button" tabindex="-1">
             <div class="py-1" role="none">
-              <button type="button" class="w-full text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 transition duration-150 ease-in-out text-left" role="menuitem" tabindex="-1" id="option-menu-item-1">Save watchlist</button>
+              @auth
+              <button type="button" class="w-full text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 transition duration-150 ease-in-out text-left" role="menuitem" tabindex="-1" id="option-menu-item-1">Save to watchlist</button>
+              @endauth
 
               <button wire:click="export" type="button" class="w-full text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 transition duration-150 ease-in-out text-left" role="menuitem" tabindex="-1" id="option-menu-item-2">Export to text file</button>
 

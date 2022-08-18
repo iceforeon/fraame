@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Livewire\Posts;
+namespace App\Http\Livewire\Watchlists;
 
 use App\Enums\Category;
-use App\Models\Post;
+use App\Models\Watchlist;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
@@ -36,12 +36,12 @@ class Form extends Component
     public function mount()
     {
         if (
-            $this->hashid && $post = request()->user()->posts()->findOr($this->hashid, fn () => abort(404))
+            $this->hashid && $watchlist = request()->user()->watchlists()->findOr($this->hashid, fn () => abort(404))
         ) {
-            $this->hashid = $post->hashid;
-            $this->items = $post->items;
-            $this->title = $post->title;
-            $this->description = $post->description;
+            $this->hashid = $watchlist->hashid;
+            $this->items = $watchlist->items;
+            $this->title = $watchlist->title;
+            $this->description = $watchlist->description;
         }
 
         $this->category = Category::Movie->value;
@@ -49,14 +49,14 @@ class Form extends Component
 
     public function render()
     {
-        return view('livewire.posts.form');
+        return view('livewire.watchlists.form');
     }
 
     public function save()
     {
         $this->validate();
 
-        Post::updateOrCreate([
+        $watchlist = Watchlist::updateOrCreate([
             'hashid' => $this->hashid,
             'user_id' => request()->user()->id,
         ], [
@@ -65,7 +65,7 @@ class Form extends Component
             'description' => $this->description,
         ]);
 
-        $this->redirectRoute('posts.index');
+        $this->redirectRoute('watchlists.index');
     }
 
     public function updatedSearch($value)
@@ -80,18 +80,6 @@ class Form extends Component
 
     public function itemSearch()
     {
-        if ($this->search == 'iceforeon') {
-            return collect([
-                [
-                    'id' => 'ife133769420',
-                    'poster_path' => '/img/ife-poster.png',
-                    'original_title' => 'Iceforeon',
-                    'year_released' => '1996',
-                    'overview' => 'Abandon all hope, ye who enter here.',
-                ],
-            ]);
-        }
-
         $category = $this->category == Category::Movie->value ? 'movie' : 'tv';
 
         $results = Http::withToken(config('services.tmdb.token'))
@@ -99,7 +87,12 @@ class Form extends Component
             ->json()['results'];
 
         return collect($results)
-            ->filter(fn ($result) => isset($result['release_date']) || isset($result['first_air_date']))
+            ->when($this->category == Category::Anime->value, function ($results) {
+                return $results->filter(fn ($result) => in_array(16, $result['genre_ids']));
+            })
+            ->filter(function ($result) {
+                return isset($result['release_date']) || isset($result['first_air_date']);
+            })
             ->map(function ($result) {
                 return collect($result)->merge([
                     'title' => $this->category == Category::Movie->value

@@ -13,9 +13,16 @@ class Scraper extends Component
     public $strategy;
 
     public $strategies = [
-        'imdb250' => [
-            'name' => 'IMDB Top 250',
-            'parent' => 'table[data-caller-name="chart-top250movie"] tbody.lister-list tr',
+        'imdb250Movies' => [
+            'name' => 'IMDB Top 250 Movies',
+            'parent' => 'table[data-caller-name="chart-top250"] tbody.lister-list tr',
+            'title' => 'tr > td.titleColumn a',
+            'year_released' => 'tr > td.titleColumn span',
+            'rating' => 'tr > td.ratingColumn',
+        ],
+        'imdb250TVShows' => [
+            'name' => 'IMDB Top 250 TV Shows',
+            'parent' => 'table[data-caller-name="chart-top250tv"] tbody.lister-list tr',
             'title' => 'tr > td.titleColumn a',
             'year_released' => 'tr > td.titleColumn span',
             'rating' => 'tr > td.ratingColumn',
@@ -71,7 +78,7 @@ class Scraper extends Component
 
         $crawler = (new Crawler($response->body()));
 
-        $items = $crawler->filter($this->parent_wrapper)->each(function ($node, $key) {
+        $items = $crawler->filter($this->parent_wrapper)->each(function ($node) {
             $idTitle = $node->filter($this->title_wrapper)->each(function ($anchor) {
                 $id = explode('/', trim($anchor->attr('href')))[2];
                 $title = trim($anchor->text());

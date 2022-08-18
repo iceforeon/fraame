@@ -31,12 +31,13 @@ class Movie extends Model
         'poster_path',
         'imdb_id',
         'imdb_rating',
-        'posted_at',
+        'featured_at',
+        'is_approved',
     ];
 
     protected $dates = [
         'release_date' => 'date:Y-m-d',
-        'posted_at',
+        'featured_at',
     ];
 
     protected function title(): Attribute
@@ -62,6 +63,11 @@ class Movie extends Model
     public function posterUrl(): Attribute
     {
         return Attribute::get(fn () => Storage::disk('media')->url($this->poster_path));
+    }
+
+    public function scopeApproved($query)
+    {
+        return $query->where('is_approved', true);
     }
 
     public function scopeTitleLike($query, $title)

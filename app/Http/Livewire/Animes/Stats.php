@@ -14,10 +14,10 @@ class Stats extends Component
                     <p class="text-sm font-medium text-gray-500 truncate">Total Animes</p>
                 </dt>
                 <dd class="pb-6 flex items-baseline sm:pb-7">
-                    <p class="text-2xl font-semibold text-gray-900">0</p>
+                    <p class="text-2xl font-semibold text-gray-900">{{ \App\Models\Anime::count() }}</p>
                     <div class="absolute bottom-0 inset-x-0 bg-gray-50 px-4 py-4 sm:px-6">
                         <div class="text-sm">
-                            <a href="#" class="font-medium text-gray-600 hover:text-gray-500 focus:underline focus:outline-none">View all</a>
+                            <a href="{{ route('animes.index') }}" class="font-medium text-gray-600 hover:text-gray-500 focus:underline focus:outline-none">View all</a>
                         </div>
                     </div>
                 </dd>

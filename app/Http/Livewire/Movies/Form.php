@@ -96,14 +96,18 @@ class Form extends Component
                 ->json()['results'];
         }
 
-        return collect($results)->map(function ($result) {
-            return collect($result)->merge([
-                'poster_path' => $result['poster_path']
-                    ? config('services.tmdb.poster_url').'/w200/'.$result['poster_path']
-                    : '/img/no-poster.png',
-                'year_released' => Carbon::parse($result['release_date'])->format('Y'),
-            ])->only(['id', 'poster_path', 'title', 'year_released', 'overview']);
-        })->take(5);
+        return collect($results)
+            ->filter(function ($result) {
+                return isset($result['release_date']);
+            })
+            ->map(function ($result) {
+                return collect($result)->merge([
+                    'poster_path' => $result['poster_path']
+                        ? config('services.tmdb.poster_url').'/w200/'.$result['poster_path']
+                        : '/img/no-poster.png',
+                    'year_released' => Carbon::parse($result['release_date'])->format('Y'),
+                ])->only(['id', 'poster_path', 'title', 'year_released', 'overview']);
+            })->take(5);
     }
 
     public function pickMovie($id)

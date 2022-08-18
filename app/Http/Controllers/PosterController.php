@@ -18,7 +18,7 @@ class PosterController extends Controller
             abort(404);
         }
 
-        $category = Category::tryFrom(request()->get('type'));
+        $category = Category::tryFrom(request()->get('category'));
 
         if (is_null($category)) {
             abort(404);

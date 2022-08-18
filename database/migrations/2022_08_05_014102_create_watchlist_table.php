@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('watchlists', function (Blueprint $table) {
             $table->id()->from(1000);
             $table->string('hashid')->nullable()->unique();
             $table->text('items')->nullable();
@@ -22,6 +22,6 @@ return new class extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('watchlist');
     }
 };

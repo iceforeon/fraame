@@ -28,7 +28,7 @@
             <tbody class="divide-y divide-gray-200 bg-white">
               @forelse ($movies as $movie)
               <tr>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500" data-rank="{{ $movie->imdb_rating }}">
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   <a href="/movie/{{ $movie->tmdb_id }}" class="hover:underline">
                     {{ $movie->title_formatted }}
                   </a>

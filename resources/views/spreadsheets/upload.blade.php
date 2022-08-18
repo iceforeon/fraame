@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-dashboard-layout>
   <div class="py-10">
     <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
       <div class="bg-white shadow-sm sm:rounded-sm">
@@ -8,4 +8,4 @@
       </div>
     </div>
   </div>
-</x-app-layout>
+</x-dashboard-layout>

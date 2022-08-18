@@ -25,7 +25,7 @@
             <tbody class="divide-y divide-gray-200 bg-white">
               @forelse ($tvshows as $tvshow)
               <tr>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500" data-rank="{{ $tvshow->imdb_rank }}">
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   {{ $tvshow->title_formatted }}
                 </td>
                 <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">

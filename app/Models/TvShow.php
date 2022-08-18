@@ -7,6 +7,8 @@ use App\Traits\Sluggable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class TvShow extends Model
 {
@@ -29,12 +31,13 @@ class TvShow extends Model
         'tmdb_id',
         'imdb_id',
         'imdb_rating',
-        'posted_at',
+        'featured_at',
+        'is_approved',
     ];
 
     protected $dates = [
-        'first_air_date',
-        'posted_at',
+        'first_air_date' => 'date:Y-m-d',
+        'featured_at',
     ];
 
     protected function title(): Attribute
@@ -44,16 +47,27 @@ class TvShow extends Model
 
     protected function titleFormatted(): Attribute
     {
-        $year = $this->first_air_date ? "({$this->first_air_date->format('Y')})" : null;
-
-        return Attribute::get(fn () => "{$this->title} {$year}");
+        return Attribute::get(fn () => "{$this->title} (".Carbon::parse($this->release_date)->format('Y').')');
     }
 
     public function yearReleased(): Attribute
     {
-        return Attribute::get(fn () => $this->first_air_date
-            ? $this->first_air_date->format('Y')
-            : null);
+        return Attribute::get(fn () => Carbon::parse($this->release_date)->format('Y'));
+    }
+
+    public function updatedAtForHuman(): Attribute
+    {
+        return Attribute::get(fn () => $this->updated_at->format('F d, Y'));
+    }
+
+    public function posterUrl(): Attribute
+    {
+        return Attribute::get(fn () => Storage::disk('media')->url($this->poster_path));
+    }
+
+    public function scopeApproved($query)
+    {
+        return $query->where('is_approved', true);
     }
 
     public function scopeTitleLike($query, $title)
@@ -61,9 +75,9 @@ class TvShow extends Model
         return $query->where('title', 'like', '%'.$title.'%');
     }
 
-    public function scopeImdbRank($query, $sort = 'asc')
+    public function scopeImdbRating($query, $sort = 'desc')
     {
-        return $query->orderBy('imdb_rank', $sort);
+        return $query->orderBy('imdb_rating', $sort);
     }
 
     public function scopeHasPoster($query)

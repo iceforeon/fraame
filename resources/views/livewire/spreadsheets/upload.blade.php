@@ -3,8 +3,8 @@
     <div class="space-y-4">
       <pre>{{ $errors }}</pre>
       <div>
-        <label for="type" class="text-sm font-semibold leading-6 text-gray-900">Category</label>
-        <select wire:model.lazy="type" name="type" id="type" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-sm mt-2">
+        <label for="category" class="text-sm font-semibold leading-6 text-gray-900">Category</label>
+        <select wire:model.lazy="category" name="category" id="category" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-sm mt-2">
           @foreach (\App\Enums\Category::cases() as $category)
           <option value="{{ $category->value }}" {{ $category==$category->value ? 'selected' : null }}>{{ $category->name }}</option>
           @endforeach

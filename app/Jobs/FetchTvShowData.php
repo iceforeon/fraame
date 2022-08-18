@@ -35,11 +35,10 @@ class FetchTvShowData implements ShouldQueue
             ->get(config('services.tmdb.api_url').'/search/tv?query='.$tvshow['title'])
             ->json()['results'];
 
-        $result = collect($results)->filter(function ($result) use ($tvshow) {
-            return isset($result['first_air_date'], $tvshow['year_released'])
-                ? str_contains($result['first_air_date'], $tvshow['year_released'])
-                : false;
-        })->first();
+        $result = collect($results)
+            ->filter(fn ($result) => isset($result['first_air_date'], $tvshow['year_released']))
+            ->filter(fn ($result) => str_contains($result['first_air_date'], $tvshow['year_released']))
+            ->first();
 
         $tvShowGenres = collect($tvShowGenres)
             ->mapWithKeys(fn ($genre) => [$genre['id'] => $genre['name']]);
@@ -60,6 +59,7 @@ class FetchTvShowData implements ShouldQueue
                 'genres' => $genres,
                 'imdb_id' => $tvshow['imdb_id'],
                 'imdb_rating' => $tvshow['imdb_rating'],
+                'is_approved' => true,
             ]);
         }
     }

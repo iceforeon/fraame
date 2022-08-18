@@ -92,6 +92,11 @@ class Watchlist extends Component
         $this->results = strlen(trim($value)) > 3 ? $this->itemSearch() : [];
     }
 
+    public function updatedCategory()
+    {
+        $this->reset(['search', 'results']);
+    }
+
     public function itemSearch()
     {
         $category = $this->category == Category::Movie->value ? 'movie' : 'tv';
@@ -102,8 +107,17 @@ class Watchlist extends Component
             ->json()['results'];
 
         return collect($results)
+            ->when($this->category == Category::Movie->value, function ($results) {
+                return $results->filter(fn ($result) => isset($result['release_date']));
+            })
+            ->when($this->category == Category::TVShow->value, function ($results) {
+                return $results->filter(fn ($result) => isset($result['first_air_date']));
+            })
+            ->when($this->category == Category::Anime->value, function ($results) {
+                return $results->filter(fn ($result) => in_array(16, $result['genre_ids']) && isset($result['first_air_date']));
+            })
             ->filter(function ($result) {
-                return ! $this->idExists($result['id']) && (isset($result['release_date']) || isset($result['first_air_date']));
+                return ! $this->idExists($result['id']);
             })
             ->map(function ($result) {
                 return collect($result)->merge([
@@ -176,7 +190,7 @@ class Watchlist extends Component
     public function removeItem($id)
     {
         $this->items = collect($this->items)
-            ->filter(fn ($item) => $item['id'] !== $id)
+            ->filter(fn ($item) => (int) $item['id'] !== (int) $id)
             ->toArray();
     }
 
@@ -252,15 +266,18 @@ class Watchlist extends Component
             return;
         }
 
+        $title = $this->title ?? 'Untitled';
+
         return response()
-            ->streamDownload(function () {
+            ->streamDownload(function () use ($title) {
+                echo "{$title}\n\n";
                 echo implode("\n\n", collect($this->items)->map(function ($item) {
                     $url = url($item['category'].'/'.$item['id']);
                     $title = "{$item['title']} ({$item['year_released']})";
 
                     return $title."\n".$url;
                 })->toArray());
-            }, str($this->title ?? 'Untitled')
+            }, str($title)
                 ->slug()
                 ->toString().'.txt');
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Spreadsheets;
 
 use App\Enums\Category;
+use App\Jobs\FetchAnimeData;
 use App\Jobs\FetchMovieData;
 use App\Jobs\FetchTvShowData;
 use App\Models\Spreadsheet;
@@ -54,6 +55,12 @@ class Table extends Component
             SimpleExcelReader::create($path)
                 ->getRows()
                 ->each(fn ($tvshow) => FetchTvShowData::dispatch($tvshow));
+        }
+
+        if ($spreadsheet->category == Category::Anime) {
+            SimpleExcelReader::create($path)
+                ->getRows()
+                ->each(fn ($anime) => FetchAnimeData::dispatch($anime));
         }
     }
 }

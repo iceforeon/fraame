@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('imdb_id')->nullable()->unique();
             $table->string('imdb_rating')->nullable();
             $table->datetime('featured_at')->nullable();
+            $table->boolean('is_approved')->default(false);
             $table->timestamps();
         });
     }

@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('create/watchlist', fn () => view('watchlist'))
-    ->name('watchlist.create');
+    ->name('watchlist');
 
 Route::get('poster/{hashid}', [PosterController::class, 'index'])
     ->name('poster');
@@ -23,9 +23,6 @@ Route::get('poster/{hashid}', [PosterController::class, 'index'])
 Route::get('dashboard', fn () => view('dashboard'))
     ->middleware('auth')
     ->name('dashboard');
-
-Route::get('/', fn () => view('home'))
-    ->name('home');
 
 Route::group([
     'prefix' => 'spreadsheets',
@@ -70,18 +67,46 @@ Route::group([
 });
 
 Route::group([
-    'prefix' => 'posts',
-    'as' => 'posts.',
+    'prefix' => 'animes',
+    'as' => 'animes.',
     'middleware' => 'auth',
 ], function () {
-    Route::get('/', fn () => view('posts.index'))
+    Route::get('/', fn () => view('animes.index'))
         ->name('index');
 
-    Route::get('create', fn () => view('posts.create'))
+    Route::get('create', fn () => view('animes.create'))
         ->name('create');
 
-    Route::get('{hashid}/edit', fn ($hashid) => view('posts.edit', ['hashid' => $hashid]))
+    Route::get('{hashid}/edit', fn ($hashid) => view('animes.edit', ['hashid' => $hashid]))
+        ->name('edit');
+});
+
+Route::group([
+    'prefix' => 'watchlists',
+    'as' => 'watchlists.',
+    'middleware' => 'auth',
+], function () {
+    Route::get('/', fn () => view('watchlists.index'))
+        ->name('index');
+
+    Route::get('watchlists', fn () => view('watchlists.create'))
+        ->name('create');
+
+    Route::get('{hashid}/edit', fn ($hashid) => view('watchlists.edit', ['hashid' => $hashid]))
         ->name('edit');
 });
 
 require __DIR__.'/auth.php';
+
+Route::get('privacy', fn () => view('privacy'))
+    ->name('privacy');
+
+Route::get('terms', fn () => view('terms'))
+    ->name('terms');
+
+Route::get('settings', fn () => view('settings'))
+    ->name('settings')
+    ->middleware('auth');
+
+Route::get('/', fn () => view('home'))
+    ->name('home');

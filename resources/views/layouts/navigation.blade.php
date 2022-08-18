@@ -15,10 +15,13 @@
             {{ __('Movies') }}
           </x-nav-link>
           <x-nav-link :href="route('tv-shows.index')" :active="request()->routeIs('tv-shows.index')">
-            {{ __('TV Show') }}
+            {{ __('TV Shows') }}
           </x-nav-link>
-          <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index')">
-            {{ __('Posts') }}
+          <x-nav-link :href="route('animes.index')" :active="request()->routeIs('animes.index')">
+            {{ __('Animes') }}
+          </x-nav-link>
+          <x-nav-link :href="route('watchlists.index')" :active="request()->routeIs('watchlists.index')">
+            {{ __('Watchlists') }}
           </x-nav-link>
         </div>
       </div>
@@ -40,7 +43,7 @@
               <x-dropdown-link href="">
                 {{ __('Profile') }}
               </x-dropdown-link>
-              <x-dropdown-link href="">
+              <x-dropdown-link :href="route('settings')">
                 {{ __('Settings') }}
               </x-dropdown-link>
               <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
@@ -69,10 +72,13 @@
         {{ __('Movies') }}
       </x-responsive-nav-link>
       <x-responsive-nav-link :href="route('tv-shows.index')" :active="request()->routeIs('tv-shows.index')">
-        {{ __('TV Show') }}
+        {{ __('TV Shows') }}
       </x-responsive-nav-link>
-      <x-responsive-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index')">
-        {{ __('Posts') }}
+      <x-responsive-nav-link :href="route('animes.index')" :active="request()->routeIs('animes.index')">
+        {{ __('Animes') }}
+      </x-responsive-nav-link>
+      <x-responsive-nav-link :href="route('watchlists.index')" :active="request()->routeIs('watchlists.index')">
+        {{ __('Watchlists') }}
       </x-responsive-nav-link>
     </div>
     <div class="pt-4 pb-1 border-t border-gray-200">

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class Watchlist extends Model
 {
     use Hashid;
     use Sluggable;
@@ -19,9 +19,9 @@ class Post extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'items',
         'title',
         'slug',
+        'items',
         'description',
         'user_id',
     ];
@@ -45,7 +45,7 @@ class Post extends Model
                     return [
                         'order' => $key + 1,
                         'id' => $item['id'],
-                        'original_title' => $item['original_title'],
+                        'title' => $item['title'],
                         'year_released' => $item['year_released'],
                     ];
                 });
