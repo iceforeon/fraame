@@ -18,8 +18,6 @@ class Watchlist extends Model
 
     public $incrementing = false;
 
-    public $keyType = 'string';
-
     protected $fillable = [
         'title',
         'slug',
