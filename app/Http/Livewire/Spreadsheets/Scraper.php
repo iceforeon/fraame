@@ -15,7 +15,7 @@ class Scraper extends Component
     public $strategies = [
         'imdb250Movies' => [
             'name' => 'IMDB Top 250 Movies',
-            'parent' => 'table[data-caller-name="chart-top250"] tbody.lister-list tr',
+            'parent' => 'table[data-caller-name="chart-top250movie"] tbody.lister-list tr',
             'title' => 'tr > td.titleColumn a',
             'year_released' => 'tr > td.titleColumn span',
             'rating' => 'tr > td.ratingColumn',
