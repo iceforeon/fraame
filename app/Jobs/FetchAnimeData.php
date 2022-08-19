@@ -44,6 +44,10 @@ class FetchAnimeData implements ShouldQueue
         $animeGenres = collect($animeGenres)
             ->mapWithKeys(fn ($genre) => [$genre['id'] => $genre['name']]);
 
+        if (empty($result)) {
+            info("{$this->spreadsheet->filename} - No result for {$anime['title']} ({$anime['year_released']})");
+        }
+
         if ($result) {
             $genres = $result['genre_ids']
                 ? collect($result['genre_ids'])

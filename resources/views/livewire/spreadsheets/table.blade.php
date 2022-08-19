@@ -27,8 +27,8 @@
                         Filename
                       </th>
 
-                      <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                        Category
+                      <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500 whitespace-nowrap">
+                        Imported At
                       </th>
 
                       <th></th>
@@ -40,12 +40,14 @@
                     <tr>
                       <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         <a href="{{ $spreadsheet->url }}" target="_blank" download class="text-sm hover:underline focus:underline focus:outline-none truncate">
-                          {{ $spreadsheet->filename }}
+                          {{ $spreadsheet->filename_formatted }}
                         </a>
                       </td>
+
                       <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {{ $spreadsheet->category->name }}
+                        {{ $spreadsheet->imported_at_for_human }}
                       </td>
+
                       <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         <div class="flex items-center justify-end divide-x divide-gray-200">
                           <button wire:click="import('{{ $spreadsheet->hashid }}')" type="button" class="text-gray-900 font-semibold text-xs uppercase hover:underline focus:underline focus:outline-none tracking-widest transition ease-in-out duration-150">

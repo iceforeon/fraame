@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Movie;
+use App\Models\Spreadsheet;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -17,7 +18,7 @@ class FetchMovieData implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function __construct(public $movie)
+    public function __construct(public $movie, public Spreadsheet $spreadsheet)
     {
     }
 
@@ -42,6 +43,10 @@ class FetchMovieData implements ShouldQueue
 
         $movieGenres = collect($movieGenres)
             ->mapWithKeys(fn ($genre) => [$genre['id'] => $genre['name']]);
+
+        if (empty($result)) {
+            info("{$this->spreadsheet->filename} - No result for {$movie['title']} ({$movie['year_released']})");
+        }
 
         if ($result) {
             $genres = $result['genre_ids']

@@ -17,13 +17,13 @@ class FetchTVShowData implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function __construct(public $tvShow)
+    public function __construct(public $tvshow)
     {
     }
 
     public function handle()
     {
-        $tvShow = $this->tvShow;
+        $tvshow = $this->tvshow;
 
         $tvShowGenres = Http::retry(3, 300)
             ->withToken(config('services.tmdb.token'))
@@ -32,16 +32,20 @@ class FetchTVShowData implements ShouldQueue
 
         $results = Http::retry(3, 300)
             ->withToken(config('services.tmdb.token'))
-            ->get(config('services.tmdb.api_url').'/search/tv?query='.$tvShow['title'])
+            ->get(config('services.tmdb.api_url').'/search/tv?query='.$tvshow['title'])
             ->json()['results'];
 
         $result = collect($results)
-            ->filter(fn ($result) => isset($result['first_air_date'], $tvShow['year_released']))
-            ->filter(fn ($result) => str_contains($result['first_air_date'], $tvShow['year_released']))
+            ->filter(fn ($result) => isset($result['first_air_date'], $tvshow['year_released']))
+            ->filter(fn ($result) => str_contains($result['first_air_date'], $tvshow['year_released']))
             ->first();
 
         $tvShowGenres = collect($tvShowGenres)
             ->mapWithKeys(fn ($genre) => [$genre['id'] => $genre['name']]);
+
+        if (empty($result)) {
+            info("{$this->spreadsheet->filename} - No result for {$tvshow['title']} ({$tvshow['year_released']})");
+        }
 
         if ($result) {
             $genres = $result['genre_ids']

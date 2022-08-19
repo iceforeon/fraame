@@ -19,15 +19,30 @@ class Spreadsheet extends Model
     protected $fillable = [
         'filename',
         'category',
+        'imported_at',
+    ];
+
+    protected $dates = [
+        'imported_at',
     ];
 
     protected $casts = [
         'category' => Category::class,
     ];
 
+    public function filenameFormatted(): Attribute
+    {
+        return Attribute::get(fn () => "{$this->filename} ({$this->category->value})");
+    }
+
     public function url(): Attribute
     {
         return Attribute::get(fn () => Storage::disk('spreadsheets')->url($this->filename));
+    }
+
+    public function importedAtForHuman(): Attribute
+    {
+        return Attribute::get(fn () => $this->imported_at ? $this->imported_at->timezone('Asia/Manila')->format('D, d F Y (H:m a)') : '---');
     }
 
     public function scopeFilenameLike($query, $title)

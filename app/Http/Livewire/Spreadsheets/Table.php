@@ -50,19 +50,21 @@ class Table extends Component
         if ($spreadsheet->category == Category::Movie) {
             SimpleExcelReader::create($path)
                 ->getRows()
-                ->each(fn ($movie) => FetchMovieData::dispatch($movie));
+                ->each(fn ($movie) => FetchMovieData::dispatch($movie, $spreadsheet));
         }
 
         if ($spreadsheet->category == Category::TVShow) {
             SimpleExcelReader::create($path)
                 ->getRows()
-                ->each(fn ($tvshow) => FetchTvShowData::dispatch($tvshow));
+                ->each(fn ($tvshow) => FetchTvShowData::dispatch($tvshow, $spreadsheet));
         }
 
         if ($spreadsheet->category == Category::Anime) {
             SimpleExcelReader::create($path)
                 ->getRows()
-                ->each(fn ($anime) => FetchAnimeData::dispatch($anime));
+                ->each(fn ($anime) => FetchAnimeData::dispatch($anime, $spreadsheet));
         }
+
+        $spreadsheet->update(['imported_at' => now()]);
     }
 }

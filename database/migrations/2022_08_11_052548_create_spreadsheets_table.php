@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('hashid')->nullable()->unique();
             $table->string('filename')->index();
             $table->string('category')->default('movie');
+            $table->dateTime('imported_at')->nullable();
             $table->timestamps();
         });
     }

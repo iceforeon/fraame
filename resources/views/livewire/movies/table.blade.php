@@ -21,6 +21,11 @@
                 <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
                   Title
                 </th>
+
+                <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                  Poster
+                </th>
+
                 <th></th>
               </tr>
             </thead>
@@ -34,9 +39,16 @@
                   </a>
                 </td>
 
-                {{-- <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  {{ $movie->featured_at ?? '---' }}
-                </td> --}}
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <a @if ($movie->poster_path)href="{{ $movie->poster_url }}"@endif target="_blank"
+                    @class([
+                      'text-xs uppercase hover:underline focus:underline focus:outline-none tracking-widest transition ease-in-out duration-150 font-semibold',
+                      'text-gray-900' => $movie->poster_path,
+                      'text-gray-300 cursor-default' => is_null($movie->poster_path),
+                    ])>
+                    View
+                  </a>
+                </td>
 
                 <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                   <div class="flex justify-end items-center space-x-3">
