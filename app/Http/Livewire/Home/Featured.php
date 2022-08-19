@@ -2,22 +2,19 @@
 
 namespace App\Http\Livewire\Home;
 
+use App\Models\Anime;
 use App\Models\Movie;
+use App\Models\TVShow;
 use Livewire\Component;
 
 class Featured extends Component
 {
     public function render()
     {
-        // select title, tmdb_poster_path, year_released
-        // join movies, tvshows, animes
-
         return view('livewire.home.featured', [
-            'items' => Movie::query()
-                ->todaysFeatured()
-                ->inRandomOrder()
-                ->get()
-                ->take(3),
+            'movie' => Movie::query()->todaysFeatured()->first(),
+            'tvshow' => TVShow::query()->todaysFeatured()->first(),
+            'anime' => Anime::query()->todaysFeatured()->first(),
         ]);
     }
 }

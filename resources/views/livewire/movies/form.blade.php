@@ -128,6 +128,14 @@
             <label for="imdb_rating" class="text-sm font-semibold leading-6 text-gray-900">IMDB Rating</label>
             <input wire:model.lazy="movie.imdb_rating" type="text" name="imdb_rating" id="imdb_rating" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-sm mt-2">
           </div>
+
+          <div class="mt-4 sm:mt-0">
+            <label for="is_approved" class="text-sm font-semibold leading-6 text-gray-900">Approved</label>
+            <select wire:model.lazy="movie.is_approved" name="is_approved" id="is_approved" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-sm mt-2">
+              <option value="1" {{ (boolean) $movie->is_approved == true ? 'selected' : null  }}>Yes</option>
+              <option value="0" {{ (boolean) $movie->is_approved == false ? 'selected' : null  }}>No</option>
+            </select>
+          </div>
         </div>
 
         @if ($hashid)

@@ -16,8 +16,8 @@ class Profile extends Component
     {
         return [
             'name' => ['required', 'string', 'max:50', 'regex:/^[a-zA-Z ]*$/'],
-            'username' => ['required', 'string', 'min:3', 'max:25', 'alpha_num', 'unique:users,username,'.request()->user()->hashid],
-            'email' => ['nullable', 'email', 'unique:users,email,'.request()->user()->hashid],
+            'username' => ['required', 'string', 'min:3', 'max:25', 'alpha_num', 'unique:users,username,'.request()->user()->id],
+            'email' => ['nullable', 'email', 'unique:users,email,'.request()->user()->id],
             'description' => ['nullable', 'string', 'max:255'],
         ];
     }
@@ -45,5 +45,7 @@ class Profile extends Component
             'email' => $this->email,
             'description' => $this->description,
         ]);
+
+        // show message response
     }
 }

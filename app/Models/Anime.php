@@ -84,4 +84,9 @@ class Anime extends Model
     {
         return $query->whereNotNull('poster_path');
     }
+
+    public function scopeTodaysFeatured($query)
+    {
+        return $query->whereDate('featured_at', now()->startOfDay());
+    }
 }

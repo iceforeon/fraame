@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Category;
+use App\Models\Anime;
 use App\Models\Movie;
 use App\Models\TVShow;
 
@@ -30,6 +31,10 @@ class PosterController extends Controller
 
         if ($category == Category::TVShow) {
             $item = TVShow::findOr($hashid, fn () => abort(404));
+        }
+
+        if ($category == Category::Anime) {
+            $item = Anime::findOr($hashid, fn () => abort(404));
         }
 
         return view('poster', ['item' => $item]);

@@ -32,6 +32,7 @@ class Form extends Component
             'anime.tmdb_poster_path' => ['nullable', 'string'],
             'anime.imdb_id' => ['nullable', 'string'],
             'anime.imdb_rating' => ['nullable', 'string'],
+            'anime.is_approved' => ['required', 'in:1,2'],
         ];
     }
 

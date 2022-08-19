@@ -32,6 +32,7 @@ class Form extends Component
             'movie.tmdb_poster_path' => ['nullable', 'string'],
             'movie.imdb_id' => ['nullable', 'string'],
             'movie.imdb_rating' => ['nullable', 'string'],
+            'movie.is_approved' => ['required', 'in:1,2'],
         ];
     }
 

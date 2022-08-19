@@ -31,6 +31,7 @@ class Form extends Component
             'tvshow.tmdb_poster_path' => ['nullable', 'string'],
             'tvshow.imdb_id' => ['nullable', 'string'],
             'tvshow.imdb_rating' => ['nullable', 'string'],
+            'tvshow.is_approved' => ['required', 'in:1,2'],
         ];
     }
 
@@ -52,14 +53,14 @@ class Form extends Component
 
         $this->tvshow->save();
 
-        $this->redirectRoute('tvshows.index');
+        $this->redirectRoute('tv-shows.index');
     }
 
     public function delete()
     {
         TVShow::find($this->tvshow->hashid)->delete();
 
-        $this->redirectRoute('tvshows.index');
+        $this->redirectRoute('tv-shows.index');
     }
 
     public function updatedSearch($value)

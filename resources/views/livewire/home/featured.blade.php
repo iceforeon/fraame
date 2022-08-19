@@ -2,15 +2,31 @@
   <div class="grow">
     <h1 class="text-center text-lg sm:text-2xl font-extrabold tracking-tight text-slate-900 leading-tight">What to watch</h1>
     <div class="flex flex-col sm:flex-row sm:space-x-6 space-y-4 sm:space-y-0 mt-5 sm:mt-10">
-      @foreach ($items as $item)
+      @if ($movie)
         <a href="" class="max-w-[282px] flex flex-col focus:shadow-lg focus:outline-none bg-white rounded-sm p-4 shadow-sm hover:shadow-lg transition ease-in-out duration-150">
-          <img src="{{ config('services.tmdb.poster_url') . '/w500/'.$item->tmdb_poster_path }}" alt="{{ $item->title }}" class="w-[250px] min-h-[375px] rounded-sm">
-          <h2 class="mt-2 text-center font-bold">{!! strlen($item->title) > 25 ? Str::replaceFirst(':', ':<br />', $item->title) : $item->title !!}</h2>
-          <p class="text-center">{{ $item->year_released }}</p>
+          <img src="{{ config('services.tmdb.poster_url') . '/w500/'.$movie->tmdb_poster_path }}" alt="{{ $movie->title }}" class="w-[250px] min-h-[375px] rounded-sm">
+          <h2 class="mt-2 text-center font-bold">{!! strlen($movie->title) > 25 ? Str::replaceFirst(':', ':<br />', $movie->title) : $movie->title !!}</h2>
+          <p class="text-center">{{ $movie->year_released }}</p>
         </a>
-      @endforeach
+      @endif
 
-      @if (! count($items))
+      @if ($tvshow)
+        <a href="" class="max-w-[282px] flex flex-col focus:shadow-lg focus:outline-none bg-white rounded-sm p-4 shadow-sm hover:shadow-lg transition ease-in-out duration-150">
+          <img src="{{ config('services.tmdb.poster_url') . '/w500/'.$tvshow->tmdb_poster_path }}" alt="{{ $tvshow->title }}" class="w-[250px] min-h-[375px] rounded-sm">
+          <h2 class="mt-2 text-center font-bold">{!! strlen($tvshow->title) > 25 ? Str::replaceFirst(':', ':<br />', $tvshow->title) : $tvshow->title !!}</h2>
+          <p class="text-center">{{ $tvshow->year_released }}</p>
+        </a>
+      @endif
+
+      @if ($anime)
+        <a href="" class="max-w-[282px] flex flex-col focus:shadow-lg focus:outline-none bg-white rounded-sm p-4 shadow-sm hover:shadow-lg transition ease-in-out duration-150">
+          <img src="{{ config('services.tmdb.poster_url') . '/w500/'.$anime->tmdb_poster_path }}" alt="{{ $anime->title }}" class="w-[250px] min-h-[375px] rounded-sm">
+          <h2 class="mt-2 text-center font-bold">{!! strlen($anime->title) > 25 ? Str::replaceFirst(':', ':<br />', $anime->title) : $anime->title !!}</h2>
+          <p class="text-center">{{ $anime->year_released }}</p>
+        </a>
+      @endif
+
+      @if (! $movie && ! $tvshow && ! $anime)
         @for ($i = 0; $i < 3; $i++)
         <div class="w-[282px] h-[463px] grow border-2 border-dashed border-gray-200 rounded-sm flex items-center justify-center text-gray-400"></div>
         @endfor

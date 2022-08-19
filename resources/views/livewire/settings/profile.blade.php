@@ -14,6 +14,11 @@
       </div>
 
       <div>
+        <label for="email" class="text-sm font-semibold leading-6 text-gray-900">Email</label>
+        <input wire:model.defer="email" type="email" name="email" id="email" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-sm mt-2" required maxlength="25">
+      </div>
+
+      <div>
         <label for="description" class="text-sm font-semibold leading-6 text-gray-900">Description</label>
         <textarea wire:model.defer="description" name="description" id="description" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm border-gray-300 rounded-sm mt-2 min-h-[58px]" maxlength="255"></textarea>
       </div>
