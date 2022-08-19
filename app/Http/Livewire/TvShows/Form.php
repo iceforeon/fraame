@@ -31,7 +31,7 @@ class Form extends Component
             'tvshow.tmdb_poster_path' => ['nullable', 'string'],
             'tvshow.imdb_id' => ['nullable', 'string'],
             'tvshow.imdb_rating' => ['nullable', 'string'],
-            'tvshow.is_approved' => ['required', 'in:1,2'],
+            'tvshow.is_approved' => ['required', 'boolean'],
         ];
     }
 
@@ -40,6 +40,10 @@ class Form extends Component
         $this->tvshow = $this->hashid
             ? TVShow::findOr($this->hashid, fn () => abort(404))
             : (new TvShow);
+
+        if (! $this->hashid) {
+            $this->tvshow->is_approved = true;
+        }
     }
 
     public function render()
@@ -133,5 +137,10 @@ class Form extends Component
     public function clear()
     {
         $this->reset(['search', 'results']);
+    }
+
+    public function updatedTvShowIsApproved($value)
+    {
+        $this->tvshow->is_approved = (int) $value;
     }
 }

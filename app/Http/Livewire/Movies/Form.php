@@ -32,7 +32,7 @@ class Form extends Component
             'movie.tmdb_poster_path' => ['nullable', 'string'],
             'movie.imdb_id' => ['nullable', 'string'],
             'movie.imdb_rating' => ['nullable', 'string'],
-            'movie.is_approved' => ['required', 'in:1,2'],
+            'movie.is_approved' => ['required', 'boolean'],
         ];
     }
 
@@ -41,6 +41,10 @@ class Form extends Component
         $this->movie = $this->hashid
             ? Movie::findOr($this->hashid, fn () => abort(404))
             : (new Movie);
+
+        if (! $this->hashid) {
+            $this->movie->is_approved = true;
+        }
     }
 
     public function render()
@@ -149,5 +153,10 @@ class Form extends Component
     public function clear()
     {
         $this->reset(['search', 'results']);
+    }
+
+    public function updatedMovieIsApproved($value)
+    {
+        $this->movie->is_approved = (int) $value;
     }
 }
