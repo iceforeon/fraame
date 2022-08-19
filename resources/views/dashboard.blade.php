@@ -18,46 +18,9 @@
         <div>
           <div class="flex items-center justify-between">
             <h3 class="text-lg leading-6 font-medium text-gray-900">Featured Today</h3>
-            <a href="" class="text-gray-900 text-xs uppercase hover:underline focus:underline focus:outline-none tracking-widest transition ease-in-out duration-150 font-semibold">View All</a>
           </div>
           <div class="bg-white shadow-sm overflow-hidden rounded-sm mt-4">
-              <div class="px-4">
-                <ul role="list" class="divide-y divide-gray-200">
-                  <li class="py-4">
-                    <div class="flex">
-                      <div class="flex-1 space-y-1">
-                        <div class="flex items-center justify-between">
-                          <h3 class="text-sm font-medium">The Godfather (1972)</h3>
-                          <p class="text-sm text-gray-500">1h</p>
-                        </div>
-                        <p class="text-sm text-gray-500">Movie</p>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="py-4">
-                    <div class="flex">
-                      <div class="flex-1 space-y-1">
-                        <div class="flex items-center justify-between">
-                          <h3 class="text-sm font-medium">Black Mirror (2011)</h3>
-                          <p class="text-sm text-gray-500">1h</p>
-                        </div>
-                        <p class="text-sm text-gray-500">TV Show</p>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="py-4">
-                    <div class="flex">
-                      <div class="flex-1 space-y-1">
-                        <div class="flex items-center justify-between">
-                          <h3 class="text-sm font-medium">My Hero Academia (2016)</h3>
-                          <p class="text-sm text-gray-500">1h</p>
-                        </div>
-                        <p class="text-sm text-gray-500">Anime</p>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
+              <livewire:dashboard.featured-today />
           </div>
         </div>
         <div>
